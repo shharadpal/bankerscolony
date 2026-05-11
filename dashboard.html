@@ -170,25 +170,25 @@ a{text-decoration:none;color:inherit;}
       <div class="stat-grid">
         <div class="stat-card sc-blue">
           <div class="stat-icon">📝</div>
-          <div class="stat-val">347</div>
+          <div class="stat-val" id="stat-mcqs">0</div>
           <div class="stat-label">MCQs Attempted</div>
-          <div class="stat-change">↑ +23 this week</div>
+          <div class="stat-change">Keep practising!</div>
         </div>
         <div class="stat-card sc-green">
           <div class="stat-icon">✅</div>
-          <div class="stat-val">71%</div>
+          <div class="stat-val" id="stat-accuracy">0%</div>
           <div class="stat-label">Accuracy</div>
-          <div class="stat-change">↑ +3% vs last week</div>
+          <div class="stat-change">Practice more to improve</div>
         </div>
         <div class="stat-card sc-gold">
           <div class="stat-icon">🎯</div>
-          <div class="stat-val">8</div>
-          <div class="stat-label">Tests Taken</div>
-          <div class="stat-change">↑ 2 this month</div>
+          <div class="stat-val" id="stat-correct-count">0</div>
+          <div class="stat-label">Correct Answers</div>
+          <div class="stat-change">Great work!</div>
         </div>
         <div class="stat-card sc-red">
           <div class="stat-icon">🔥</div>
-          <div class="stat-val">5</div>
+          <div class="stat-val">1</div>
           <div class="stat-label">Day Streak</div>
           <div class="stat-change">Keep it going!</div>
         </div>
@@ -202,22 +202,10 @@ a{text-decoration:none;color:inherit;}
               <h3>📊 Subject-wise Accuracy</h3>
               <a href="mcq.html" class="btn btn-outline btn-sm">Practice →</a>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="subject-progress">
               <div class="prog-item">
-                <div class="prog-head"><span class="prog-label">🏦 Banking Awareness</span><span class="prog-val">84% · 210/250</span></div>
-                <div class="prog-track"><div class="prog-fill" style="width:84%;background:var(--blue2);"></div></div>
-              </div>
-              <div class="prog-item">
-                <div class="prog-head"><span class="prog-label">📋 PPB — JAIIB</span><span class="prog-val">72% · 65/90</span></div>
-                <div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--green);"></div></div>
-              </div>
-              <div class="prog-item">
-                <div class="prog-head"><span class="prog-label">🔢 Quantitative Aptitude</span><span class="prog-val">65% · 45/70</span></div>
-                <div class="prog-track"><div class="prog-fill" style="width:65%;background:var(--gold);"></div></div>
-              </div>
-              <div class="prog-item" style="margin-bottom:0;">
-                <div class="prog-head"><span class="prog-label">🧠 Reasoning Ability</span><span class="prog-val">58% · 32/55</span></div>
-                <div class="prog-track"><div class="prog-fill" style="width:58%;background:var(--red);"></div></div>
+                <div class="prog-head"><span class="prog-label">Practice MCQs to see your stats</span><span class="prog-val">—</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:0%;background:var(--blue2);"></div></div>
               </div>
             </div>
           </div>
@@ -366,6 +354,7 @@ a{text-decoration:none;color:inherit;}
   </main>
 </div>
 
+<script src="https://unpkg.com/@netlify/identity@0"></script>
 <script>
 function switchSection(id) {
   document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
@@ -373,6 +362,63 @@ function switchSection(id) {
   document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
   event.currentTarget.classList.add('active');
 }
+
+async function loadDashboard() {
+  try {
+    const user = await NetlifyIdentity.getUser();
+    if (!user) {
+      window.location.href = 'login.html';
+      return;
+    }
+    const name = user.user_metadata?.full_name || user.email.split('@')[0];
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+
+    document.querySelector('.page-title').textContent = 'Good Morning, ' + name.split(' ')[0] + ' 👋';
+    document.querySelector('.sb-name').textContent = name;
+    document.querySelector('.sb-email').textContent = user.email;
+    document.querySelector('.sb-avatar').textContent = initials;
+    document.querySelector('.user-avatar').textContent = initials;
+    document.querySelector('.user-name').textContent = name.split(' ')[0];
+
+    const profileName = document.querySelector('#section-profile input[type="text"]');
+    if (profileName) profileName.value = name.split(' ')[0] || '';
+    const profileLast = document.querySelectorAll('#section-profile input[type="text"]')[1];
+    if (profileLast) profileLast.value = name.split(' ').slice(1).join(' ') || '';
+    const profileEmail = document.querySelector('#section-profile input[type="email"]');
+    if (profileEmail) profileEmail.value = user.email;
+
+    try {
+      const res = await fetch('/api/user/stats');
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('stat-mcqs').textContent = data.stats.attempted;
+        document.getElementById('stat-accuracy').textContent = data.stats.accuracy + '%';
+        document.getElementById('stat-correct-count').textContent = data.stats.correct;
+
+        if (data.subjectStats && data.subjectStats.length > 0) {
+          const progContainer = document.getElementById('subject-progress');
+          if (progContainer) {
+            progContainer.innerHTML = '';
+            data.subjectStats.forEach(s => {
+              const acc = Number(s.attempted) > 0 ? Math.round(Number(s.correct) / Number(s.attempted) * 100) : 0;
+              progContainer.innerHTML += '<div class="prog-item"><div class="prog-head"><span class="prog-label">' + s.course + '</span><span class="prog-val">' + acc + '% · ' + s.correct + '/' + s.attempted + '</span></div><div class="prog-track"><div class="prog-fill" style="width:' + acc + '%;background:var(--blue2);"></div></div></div>';
+            });
+          }
+        }
+      }
+    } catch(e) {}
+
+    document.querySelector('.header-right .btn-outline').onclick = async function(e) {
+      e.preventDefault();
+      await NetlifyIdentity.logout();
+      window.location.href = 'login.html';
+    };
+  } catch(err) {
+    window.location.href = 'login.html';
+  }
+}
+
+loadDashboard();
 </script>
 </body>
 </html>

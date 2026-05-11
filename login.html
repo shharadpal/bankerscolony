@@ -210,8 +210,8 @@ a{text-decoration:none;color:inherit;}
   </div>
 </div>
 
+<script src="https://unpkg.com/@netlify/identity@0"></script>
 <script>
-// Check URL hash for tab
 if(window.location.hash === '#register') switchTab('register');
 
 function switchTab(tab) {
@@ -224,33 +224,53 @@ function switchTab(tab) {
   else window.location.hash='';
 }
 
-function doLogin() {
+async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-password').value;
-  if(!email || !pass) { document.getElementById('login-error').classList.add('show'); return; }
-  // In production: POST to /api/auth/login
   document.getElementById('login-error').classList.remove('show');
-  // Demo redirect
-  window.location.href = 'dashboard.html';
+  if(!email || !pass) { showLoginError('Please enter email and password.'); return; }
+  try {
+    await NetlifyIdentity.login(email, pass);
+    window.location.href = 'dashboard.html';
+  } catch(err) {
+    showLoginError('Invalid email or password. Please try again.');
+  }
 }
 
-function doRegister() {
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+async function doRegister() {
   const fname = document.getElementById('reg-fname').value.trim();
+  const lname = document.getElementById('reg-lname').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const pass = document.getElementById('reg-password').value;
   const terms = document.getElementById('reg-terms').checked;
-  if(!fname || !email || pass.length < 8 || !terms) {
-    document.getElementById('reg-error').classList.add('show'); return;
-  }
   document.getElementById('reg-error').classList.remove('show');
-  // In production: POST to /api/auth/register
-  document.getElementById('reg-success').classList.add('show');
-  setTimeout(() => window.location.href = 'dashboard.html', 2000);
+  if(!fname || !email || pass.length < 8 || !terms) {
+    document.getElementById('reg-error').textContent = 'Please fill all fields. Password must be at least 8 characters.';
+    document.getElementById('reg-error').classList.add('show');
+    return;
+  }
+  try {
+    await NetlifyIdentity.signup(email, pass, { full_name: fname + (lname ? ' ' + lname : '') });
+    document.getElementById('reg-success').classList.add('show');
+    setTimeout(() => window.location.href = 'dashboard.html', 2000);
+  } catch(err) {
+    document.getElementById('reg-error').textContent = err.message || 'Registration failed. Please try again.';
+    document.getElementById('reg-error').classList.add('show');
+  }
 }
 
-function googleAuth() {
-  // In production: redirect to /api/auth/google
-  alert('Google login will work once backend is connected.');
+async function googleAuth() {
+  try {
+    await NetlifyIdentity.oauthLogin('google');
+  } catch(err) {
+    alert('Google login is not available yet. Please use email login.');
+  }
 }
 
 function showForgot() { document.getElementById('forgot-modal').classList.add('show'); }
@@ -258,17 +278,28 @@ function hideForgot() {
   document.getElementById('forgot-modal').classList.remove('show');
   document.getElementById('forgot-success').classList.remove('show');
 }
-function doForgot() {
+async function doForgot() {
   const email = document.getElementById('forgot-email').value.trim();
   if(!email) return;
-  // In production: POST to /api/auth/forgot-password
-  document.getElementById('forgot-success').classList.add('show');
+  try {
+    await NetlifyIdentity.requestPasswordRecovery(email);
+    document.getElementById('forgot-success').classList.add('show');
+  } catch(err) {
+    document.getElementById('forgot-success').textContent = 'If this email is registered, a reset link has been sent.';
+    document.getElementById('forgot-success').classList.add('show');
+  }
 }
 
-// Close modal on overlay click
 document.getElementById('forgot-modal').addEventListener('click', function(e){
   if(e.target === this) hideForgot();
 });
+
+(async function checkAuth() {
+  try {
+    const user = await NetlifyIdentity.getUser();
+    if(user) window.location.href = 'dashboard.html';
+  } catch(e) {}
+})();
 </script>
 </body>
 </html>
