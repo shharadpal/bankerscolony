@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Bankers Colony</title>
+<meta name="description" content="About Bankers Colony — India's trusted banking exam preparation platform for JAIIB, CAIIB, Bank Promotion and competitive exams.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--blue:#1E40AF;--blue2:#2563EB;--blue3:#DBEAFE;--blue4:#EFF6FF;--gold:#D97706;--green:#059669;--green2:#D1FAE5;--gray:#6B7280;--gray2:#F3F4F6;--gray3:#E5E7EB;--dark:#111827;--white:#fff;--body:#F9FAFB;}
+body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--white);}
+a{text-decoration:none;color:inherit;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--blue2);color:#fff;}
+.btn-primary:hover{background:var(--blue);}
+.btn-white{background:#fff;color:var(--blue2);}
+.btn-sm{padding:6px 14px;font-size:12.5px;}
+.btn-outline{background:transparent;border:1.5px solid var(--gray3);color:var(--dark);}
+.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);}
+.container{max-width:1100px;margin:0 auto;padding:0 20px;}
+
+.header{background:#fff;border-bottom:1px solid var(--gray3);height:62px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+.header-inner{display:flex;align-items:center;gap:14px;width:100%;}
+.logo-name{font-family:'Merriweather',serif;font-size:17px;font-weight:900;color:var(--blue);}
+.logo-name span{color:var(--gold);}
+.header-right{margin-left:auto;display:flex;gap:8px;}
+
+/* HERO */
+.page-hero{background:linear-gradient(135deg,#1E3A8A,var(--blue2));padding:52px 0 48px;color:#fff;text-align:center;}
+.ph-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#FCD34D;margin-bottom:8px;}
+.ph-title{font-family:'Merriweather',serif;font-size:32px;font-weight:900;margin-bottom:10px;}
+.ph-sub{font-size:15px;color:rgba(255,255,255,.65);max-width:560px;margin:0 auto;line-height:1.7;}
+
+/* CONTENT */
+.page-content{padding:56px 0 64px;}
+.section-title{font-family:'Merriweather',serif;font-size:24px;font-weight:700;color:var(--dark);margin-bottom:14px;}
+.body-text{font-size:15px;color:var(--gray);line-height:1.8;margin-bottom:18px;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:48px 0;}
+.stat-item{background:var(--body);border:1px solid var(--gray3);border-radius:12px;padding:24px;text-align:center;}
+.si-val{font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:var(--blue2);margin-bottom:6px;}
+.si-label{font-size:13px;color:var(--gray);}
+
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:32px 0;}
+.val-card{padding:24px;background:var(--body);border-radius:12px;border:1px solid var(--gray3);}
+.val-icon{font-size:32px;margin-bottom:12px;}
+.val-title{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:8px;}
+.val-body{font-size:13px;color:var(--gray);line-height:1.65;}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:32px 0;}
+.team-card{background:#fff;border:1px solid var(--gray3);border-radius:12px;padding:24px;text-align:center;}
+.team-avatar{width:68px;height:68px;border-radius:50%;background:var(--blue2);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 14px;}
+.team-name{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.team-role{font-size:12px;color:var(--blue2);font-weight:600;margin-bottom:8px;}
+.team-bio{font-size:12.5px;color:var(--gray);line-height:1.6;}
+
+/* CTA */
+.cta-strip{background:linear-gradient(135deg,var(--blue),var(--blue2));padding:52px 0;text-align:center;color:#fff;}
+.cta-strip h2{font-family:'Merriweather',serif;font-size:28px;font-weight:900;margin-bottom:10px;}
+.cta-strip p{font-size:15px;color:rgba(255,255,255,.65);margin-bottom:24px;}
+.cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+
+.footer{background:var(--dark);padding:20px;text-align:center;color:rgba(255,255,255,.3);font-size:12.5px;}
+.footer a{color:rgba(255,255,255,.4);margin:0 10px;}
+.footer a:hover{color:#FCD34D;}
+
+@media(max-width:900px){.stats-row,.values-grid,.team-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.stats-row,.values-grid,.team-grid{grid-template-columns:1fr;}.ph-title{font-size:26px;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo-name">Bankers<span>Colony</span></a>
+    <nav style="display:flex;gap:4px;margin-left:16px;">
+      <a href="index.html" style="padding:6px 12px;border-radius:6px;font-size:13px;color:var(--gray);">Home</a>
+      <a href="courses.html" style="padding:6px 12px;border-radius:6px;font-size:13px;color:var(--gray);">Courses</a>
+      <a href="mcq.html" style="padding:6px 12px;border-radius:6px;font-size:13px;color:var(--gray);">Free MCQs</a>
+      <a href="contact.html" style="padding:6px 12px;border-radius:6px;font-size:13px;color:var(--gray);">Contact</a>
+    </nav>
+    <div class="header-right">
+      <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="login.html#register" class="btn btn-primary btn-sm">Join Free</a>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="ph-label">About Bankers Colony</div>
+  <h1 class="ph-title">Built by Bankers. For Bankers.</h1>
+  <p class="ph-sub">We are a team of serving public sector bank officers who built the platform we wished existed when we were preparing for our exams.</p>
+</div>
+
+<div class="page-content">
+  <div class="container">
+
+    <!-- MISSION -->
+    <div style="max-width:740px;margin:0 auto 48px;">
+      <div class="section-title">Our Mission</div>
+      <p class="body-text">Bankers Colony was founded with one purpose — to give every Indian banker and banking aspirant access to the highest quality exam preparation material at a price that does not burn a hole in their pocket.</p>
+      <p class="body-text">We saw the gap. Good study material for JAIIB, CAIIB and bank promotion exams was either expensive, scattered, or outdated. So we built the platform we wished had existed — every MCQ, every PDF note, every mock test crafted by bankers with first-hand exam experience.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-item"><div class="si-val">50K+</div><div class="si-label">Students & Professionals</div></div>
+      <div class="stat-item"><div class="si-val">5,000+</div><div class="si-label">MCQs Published</div></div>
+      <div class="stat-item"><div class="si-val">200+</div><div class="si-label">PDF Study Notes</div></div>
+      <div class="stat-item"><div class="si-val">98%</div><div class="si-label">Student Satisfaction</div></div>
+    </div>
+
+    <!-- VALUES -->
+    <div class="section-title">What We Stand For</div>
+    <div class="values-grid">
+      <div class="val-card"><div class="val-icon">🎯</div><div class="val-title">Accuracy First</div><div class="val-body">Every question is verified by a subject expert before publishing. Zero tolerance for wrong answers.</div></div>
+      <div class="val-card"><div class="val-icon">🔄</div><div class="val-title">Always Updated</div><div class="val-body">Content updated within 48 hours of any RBI circular, IIBF syllabus change, or exam notification.</div></div>
+      <div class="val-card"><div class="val-icon">💰</div><div class="val-title">Affordable</div><div class="val-body">Starting at ₹299/month. Less than a textbook. Free tier available with no credit card required.</div></div>
+      <div class="val-card"><div class="val-icon">📱</div><div class="val-title">Mobile Friendly</div><div class="val-body">Every MCQ, every mock test, every PDF works perfectly on your mobile phone.</div></div>
+      <div class="val-card"><div class="val-icon">🔒</div><div class="val-title">Privacy First</div><div class="val-body">Your data is yours. We never sell or share your personal information with third parties.</div></div>
+      <div class="val-card"><div class="val-icon">🤝</div><div class="val-title">Community</div><div class="val-body">15,000+ active members on Telegram and WhatsApp helping each other every day.</div></div>
+    </div>
+
+    <!-- TEAM -->
+    <div style="margin-top:48px;">
+      <div class="section-title">Our Team</div>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-avatar">BC</div><div class="team-name">Founder & Editor</div><div class="team-role">Public Sector Bank Officer · JAIIB & CAIIB Certified</div><div class="team-bio">Serving bank officer with 12+ years of experience. Cleared JAIIB, CAIIB, and multiple promotion exams.</div></div>
+        <div class="team-card"><div class="team-avatar" style="background:var(--gold);">SM</div><div class="team-name">Content Head — Student Exams</div><div class="team-role">IBPS PO (2018) · Quantitative Specialist</div><div class="team-bio">Created 2,000+ quantitative aptitude and reasoning questions. Cleared IBPS PO and SBI PO in the same year.</div></div>
+        <div class="team-card"><div class="team-avatar" style="background:var(--green);">PK</div><div class="team-name">Banking Regulations Expert</div><div class="team-role">Former RBI Officer · CAIIB ABM Specialist</div><div class="team-bio">15 years in regulatory banking. Writes CAIIB notes and banking regulation content. Our most accurate author.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cta-strip">
+  <div class="container">
+    <h2>Join 50,000+ Bankers on Bankers Colony</h2>
+    <p>Register free. No credit card required. Access 1,200+ free MCQs and 20 free mock tests instantly.</p>
+    <div class="cta-btns">
+      <a href="login.html#register" class="btn btn-white">🚀 Register Free Now</a>
+      <a href="courses.html" class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.3);">View Courses →</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  © 2026 BankersColony.com &nbsp;|&nbsp;
+  <a href="index.html">Home</a><a href="courses.html">Courses</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="contact.html">Contact</a>
+</div>
+</body>
+</html>

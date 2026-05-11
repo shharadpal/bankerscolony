@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login / Register — Bankers Colony</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--blue:#1E40AF;--blue2:#2563EB;--blue3:#DBEAFE;--blue4:#EFF6FF;--gold:#D97706;--green:#059669;--red:#DC2626;--gray:#6B7280;--gray2:#F3F4F6;--gray3:#E5E7EB;--dark:#111827;--white:#fff;}
+body{font-family:'Inter',sans-serif;background:var(--gray2);min-height:100vh;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;border:none;}
+.btn-primary{background:var(--blue2);color:#fff;}
+.btn-primary:hover{background:var(--blue);}
+.btn-google{background:#fff;color:var(--dark);border:1.5px solid var(--gray3);}
+.btn-google:hover{background:var(--gray2);border-color:var(--gray);}
+.btn-outline{background:transparent;border:1.5px solid var(--gray3);color:var(--gray);}
+.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);}
+
+/* TOPBAR */
+.topbar{background:var(--dark);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:8px;}
+.logo-name{font-family:'Merriweather',serif;font-size:16px;font-weight:900;color:#fff;}
+.logo-name span{color:#FCD34D;}
+.topbar-back{font-size:13px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px;}
+.topbar-back:hover{color:#FCD34D;}
+
+/* AUTH WRAP */
+.auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 20px;}
+.auth-container{display:grid;grid-template-columns:400px 400px;gap:0;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.15);max-width:800px;width:100%;}
+
+/* LEFT PANEL */
+.auth-left{background:linear-gradient(135deg,#1E3A8A,#1E40AF);padding:48px 40px;display:flex;flex-direction:column;justify-content:center;}
+.al-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:20px;}
+.auth-left h2{font-family:'Merriweather',serif;font-size:26px;font-weight:900;color:#fff;margin-bottom:10px;line-height:1.3;}
+.auth-left p{font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:28px;line-height:1.7;}
+.al-benefit{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(255,255,255,.75);}
+.al-benefit:last-child{border-bottom:none;}
+.al-ico{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+
+/* RIGHT PANEL */
+.auth-right{background:#fff;padding:40px 36px;display:flex;flex-direction:column;justify-content:center;}
+
+/* TABS */
+.auth-tabs{display:flex;border-bottom:2px solid var(--gray3);margin-bottom:28px;}
+.auth-tab{flex:1;padding:10px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;color:var(--gray);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}
+.auth-tab.active{color:var(--blue2);border-bottom-color:var(--blue2);}
+
+/* FORM */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--dark);margin-bottom:5px;}
+.field input,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--gray3);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;outline:none;color:var(--dark);transition:border-color .2s;background:#fff;}
+.field input:focus,.field select:focus{border-color:var(--blue2);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field-hint{font-size:11.5px;color:var(--gray);margin-top:4px;}
+.divider-or{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--gray);font-size:12px;}
+.divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--gray3);}
+.auth-footer{text-align:center;font-size:13px;color:var(--gray);margin-top:16px;}
+.auth-footer a{color:var(--blue2);font-weight:600;}
+.forgot-link{font-size:12px;color:var(--blue2);text-align:right;display:block;margin-top:4px;}
+.check-row{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--gray);margin-bottom:16px;}
+.check-row input{margin-top:3px;flex-shrink:0;}
+.error-msg{background:#FEE2E2;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none;}
+.error-msg.show{display:block;}
+.success-msg{background:#D1FAE5;border:1px solid #A7F3D0;border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:14px;display:none;}
+.success-msg.show{display:block;}
+
+/* FORGOT PASSWORD MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .2s;}
+.modal-overlay.show{opacity:1;visibility:visible;}
+.modal{background:#fff;border-radius:16px;padding:36px;max-width:380px;width:90%;text-align:center;transform:scale(.95);transition:transform .2s;}
+.modal-overlay.show .modal{transform:scale(1);}
+.modal h3{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:8px;}
+.modal p{font-size:13.5px;color:var(--gray);margin-bottom:20px;line-height:1.6;}
+.modal .field{text-align:left;}
+.modal-close{position:absolute;top:12px;right:16px;font-size:22px;cursor:pointer;background:none;border:none;color:var(--gray);}
+
+@media(max-width:700px){
+  .auth-container{grid-template-columns:1fr;}
+  .auth-left{display:none;}
+  .auth-right{padding:32px 24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="index.html" class="logo">
+    <div class="logo-name">Bankers<span>Colony</span></div>
+  </a>
+  <a href="index.html" class="topbar-back">← Back to Homepage</a>
+</div>
+
+<div class="auth-wrap">
+  <div class="auth-container">
+
+    <!-- LEFT -->
+    <div class="auth-left">
+      <div class="al-badge">🏆 Trusted by 50,000+ Bankers</div>
+      <h2>Your Banking Exam Success Starts Here</h2>
+      <p>Join thousands of bank professionals who cleared JAIIB, CAIIB and promotion exams with Bankers Colony.</p>
+      <div class="al-benefit"><div class="al-ico">📝</div>1,200+ Free MCQs — access instantly</div>
+      <div class="al-benefit"><div class="al-ico">🎯</div>20 Free Mock Tests — timed and evaluated</div>
+      <div class="al-benefit"><div class="al-ico">📄</div>Free PDF study notes downloads</div>
+      <div class="al-benefit"><div class="al-ico">⚡</div>Daily Banking Awareness — AI-powered</div>
+      <div class="al-benefit"><div class="al-ico">📊</div>Track your progress and weak areas</div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="auth-right">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchTab('login')">Sign In</div>
+        <div class="auth-tab" onclick="switchTab('register')">Register Free</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="tab-content active" id="tab-login">
+        <div class="error-msg" id="login-error">Invalid email or password. Please try again.</div>
+        <button class="btn btn-google" onclick="googleAuth()" style="margin-bottom:8px;">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18" alt="G"> Continue with Google
+        </button>
+        <div class="divider-or">OR LOGIN WITH EMAIL</div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="login-email" placeholder="yourname@email.com">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="Enter your password">
+          <a class="forgot-link" onclick="showForgot()">Forgot Password?</a>
+        </div>
+        <button class="btn btn-primary" onclick="doLogin()">Sign In →</button>
+        <div class="auth-footer">
+          Don't have an account? <a onclick="switchTab('register')">Register Free →</a>
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div class="tab-content" id="tab-register">
+        <div class="success-msg" id="reg-success">✅ Account created! Please check your email to verify.</div>
+        <div class="error-msg" id="reg-error">Please fill all required fields correctly.</div>
+        <button class="btn btn-google" onclick="googleAuth()" style="margin-bottom:8px;">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18" alt="G"> Register with Google
+        </button>
+        <div class="divider-or">OR FILL DETAILS</div>
+        <div class="field-row">
+          <div class="field">
+            <label>First Name *</label>
+            <input type="text" id="reg-fname" placeholder="Rahul">
+          </div>
+          <div class="field">
+            <label>Last Name *</label>
+            <input type="text" id="reg-lname" placeholder="Sharma">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email Address *</label>
+          <input type="email" id="reg-email" placeholder="yourname@email.com">
+        </div>
+        <div class="field">
+          <label>Mobile Number</label>
+          <input type="tel" id="reg-mobile" placeholder="+91 98765 43210">
+        </div>
+        <div class="field">
+          <label>I am preparing for</label>
+          <select id="reg-exam">
+            <option value="">Select Exam</option>
+            <option>JAIIB</option>
+            <option>CAIIB</option>
+            <option>Bank Promotion Exam</option>
+            <option>Foreign Posting Exam</option>
+            <option>IBPS PO / Clerk</option>
+            <option>SBI PO / Clerk</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Password *</label>
+          <input type="password" id="reg-password" placeholder="Minimum 8 characters">
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="reg-terms">
+          <label for="reg-terms">I agree to the <a href="terms.html" style="color:var(--blue2);">Terms</a> and <a href="privacy.html" style="color:var(--blue2);">Privacy Policy</a></label>
+        </div>
+        <button class="btn btn-primary" onclick="doRegister()">Create Free Account 🚀</button>
+        <div class="auth-footer">Already have an account? <a onclick="switchTab('login')">Sign In →</a></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal-overlay" id="forgot-modal">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="hideForgot()">✕</button>
+    <div style="font-size:40px;margin-bottom:12px;">🔒</div>
+    <h3>Forgot Password?</h3>
+    <p>Enter your email address and we will send you a reset link within 5 minutes.</p>
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="forgot-email" placeholder="yourname@email.com">
+    </div>
+    <button class="btn btn-primary" onclick="doForgot()">Send Reset Link →</button>
+    <div id="forgot-success" class="success-msg" style="margin-top:14px;text-align:left;">✅ Reset link sent! Check your inbox.</div>
+  </div>
+</div>
+
+<script>
+// Check URL hash for tab
+if(window.location.hash === '#register') switchTab('register');
+
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => {
+    t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register'));
+  });
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+  if(tab==='register') window.location.hash='register';
+  else window.location.hash='';
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  if(!email || !pass) { document.getElementById('login-error').classList.add('show'); return; }
+  // In production: POST to /api/auth/login
+  document.getElementById('login-error').classList.remove('show');
+  // Demo redirect
+  window.location.href = 'dashboard.html';
+}
+
+function doRegister() {
+  const fname = document.getElementById('reg-fname').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-password').value;
+  const terms = document.getElementById('reg-terms').checked;
+  if(!fname || !email || pass.length < 8 || !terms) {
+    document.getElementById('reg-error').classList.add('show'); return;
+  }
+  document.getElementById('reg-error').classList.remove('show');
+  // In production: POST to /api/auth/register
+  document.getElementById('reg-success').classList.add('show');
+  setTimeout(() => window.location.href = 'dashboard.html', 2000);
+}
+
+function googleAuth() {
+  // In production: redirect to /api/auth/google
+  alert('Google login will work once backend is connected.');
+}
+
+function showForgot() { document.getElementById('forgot-modal').classList.add('show'); }
+function hideForgot() {
+  document.getElementById('forgot-modal').classList.remove('show');
+  document.getElementById('forgot-success').classList.remove('show');
+}
+function doForgot() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if(!email) return;
+  // In production: POST to /api/auth/forgot-password
+  document.getElementById('forgot-success').classList.add('show');
+}
+
+// Close modal on overlay click
+document.getElementById('forgot-modal').addEventListener('click', function(e){
+  if(e.target === this) hideForgot();
+});
+</script>
+</body>
+</html>

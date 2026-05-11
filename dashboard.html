@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — Bankers Colony</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--blue:#1E40AF;--blue2:#2563EB;--blue3:#DBEAFE;--blue4:#EFF6FF;--gold:#D97706;--gold2:#FEF3C7;--green:#059669;--green2:#D1FAE5;--red:#DC2626;--red2:#FEE2E2;--gray:#6B7280;--gray2:#F3F4F6;--gray3:#E5E7EB;--dark:#111827;--white:#fff;--body:#F9FAFB;}
+body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--body);}
+a{text-decoration:none;color:inherit;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--blue2);color:#fff;}
+.btn-primary:hover{background:var(--blue);}
+.btn-outline{background:transparent;border:1.5px solid var(--gray3);color:var(--dark);}
+.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* HEADER */
+.header{background:#fff;border-bottom:1px solid var(--gray3);height:60px;display:flex;align-items:center;position:sticky;top:0;z-index:200;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:14px;width:100%;}
+.logo-name{font-family:'Merriweather',serif;font-size:17px;font-weight:900;color:var(--blue);}
+.logo-name span{color:var(--gold);}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;}
+.user-name{font-size:13px;font-weight:600;color:var(--dark);}
+
+/* LAYOUT */
+.dash-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px);}
+
+/* SIDEBAR */
+.sidebar{background:#fff;border-right:1px solid var(--gray3);padding:20px 0;}
+.sb-user{padding:16px 18px 20px;border-bottom:1px solid var(--gray3);margin-bottom:10px;}
+.sb-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700;margin-bottom:10px;}
+.sb-name{font-size:14px;font-weight:700;color:var(--dark);}
+.sb-email{font-size:11.5px;color:var(--gray);margin-top:2px;}
+.sb-plan{display:inline-block;background:var(--blue3);color:var(--blue2);font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;margin-top:6px;}
+.sb-plan.free{background:var(--green2);color:var(--green);}
+.sb-section{padding:8px 18px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);}
+.sb-link{display:flex;align-items:center;gap:9px;padding:10px 18px;font-size:13px;font-weight:500;color:var(--gray);cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
+.sb-link:hover{background:var(--blue4);color:var(--blue2);}
+.sb-link.active{background:var(--blue4);border-left-color:var(--blue2);color:var(--blue2);font-weight:600;}
+.sb-link .si{font-size:16px;width:20px;text-align:center;}
+
+/* MAIN */
+.main{padding:24px;background:var(--body);}
+.page-title{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--gray);margin-bottom:24px;}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:#fff;border:1px solid var(--gray3);border-radius:12px;padding:18px;position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sc-blue::after{background:var(--blue2);}
+.sc-green::after{background:var(--green);}
+.sc-gold::after{background:var(--gold);}
+.sc-red::after{background:var(--red);}
+.stat-icon{font-size:26px;margin-bottom:10px;}
+.stat-val{font-size:26px;font-weight:800;color:var(--dark);font-variant-numeric:tabular-nums;}
+.stat-label{font-size:12px;color:var(--gray);margin-top:3px;}
+.stat-change{font-size:11px;font-weight:600;margin-top:6px;color:var(--green);}
+
+/* CONTENT GRID */
+.content-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--gray3);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+.card-head{padding:14px 18px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;justify-content:space-between;}
+.card-head h3{font-size:14px;font-weight:700;color:var(--dark);}
+.card-body{padding:16px 18px;}
+
+/* PROGRESS BARS */
+.prog-item{margin-bottom:14px;}
+.prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.prog-label{font-size:13px;font-weight:500;color:var(--dark);}
+.prog-val{font-size:12px;color:var(--gray);}
+.prog-track{height:8px;background:var(--gray3);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+
+/* RECENT TESTS */
+.test-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray3);}
+.test-row:last-child{border-bottom:none;}
+.test-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--blue4);}
+.test-info{flex:1;}
+.test-info h4{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;}
+.test-info p{font-size:11.5px;color:var(--gray);}
+.test-score{font-size:15px;font-weight:800;color:var(--blue2);text-align:right;flex-shrink:0;}
+.test-score span{display:block;font-size:10.5px;font-weight:400;color:var(--gray);}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--gray3);margin-bottom:20px;}
+.tab{padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}
+.tab.active{color:var(--blue2);border-bottom-color:var(--blue2);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* UPGRADE CARD */
+.upgrade-card{background:linear-gradient(135deg,var(--blue),#1E3A8A);border-radius:12px;padding:20px;color:#fff;text-align:center;margin-bottom:16px;}
+.uc-icon{font-size:32px;margin-bottom:8px;}
+.uc-title{font-size:15px;font-weight:700;margin-bottom:4px;}
+.uc-sub{font-size:12px;color:rgba(255,255,255,.65);margin-bottom:14px;line-height:1.55;}
+
+/* ACTIVITY */
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray3);}
+.activity-item:last-child{border-bottom:none;}
+.act-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.act-body p{font-size:13px;color:var(--dark);}
+.act-body span{font-size:11px;color:var(--gray);}
+
+/* RESPONSIVE */
+@media(max-width:900px){.dash-layout{grid-template-columns:1fr;}.sidebar{display:none;}.stat-grid{grid-template-columns:repeat(2,1fr);}.content-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.stat-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo-name">Bankers<span>Colony</span></a>
+    <div class="header-right">
+      <div class="user-avatar">RS</div>
+      <span class="user-name">Rahul</span>
+      <a href="login.html" class="btn btn-outline btn-sm">Logout</a>
+    </div>
+  </div>
+</header>
+
+<div class="dash-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-user">
+      <div class="sb-avatar">RS</div>
+      <div class="sb-name">Rahul Sharma</div>
+      <div class="sb-email">rahul@sbi.co.in</div>
+      <div class="sb-plan free">Free Plan</div>
+    </div>
+    <div class="sb-section">Learning</div>
+    <div class="sb-link active" onclick="switchSection('overview')"><span class="si">📊</span> Overview</div>
+    <div class="sb-link" onclick="switchSection('courses')"><span class="si">🎓</span> My Courses</div>
+    <div class="sb-link" onclick="switchSection('tests')"><span class="si">🎯</span> My Tests</div>
+    <div class="sb-link" onclick="switchSection('mcqs')"><span class="si">📝</span> MCQ History</div>
+    <div class="sb-link" onclick="location.href='courses.html?type=pdf'"><span class="si">📄</span> PDF Notes</div>
+    <div class="sb-section">Account</div>
+    <div class="sb-link" onclick="switchSection('profile')"><span class="si">👤</span> Profile</div>
+    <div class="sb-link" onclick="switchSection('subscription')"><span class="si">💳</span> Subscription</div>
+    <div style="padding:16px 14px;margin-top:12px;">
+      <a href="login.html#register" class="btn btn-gold" style="width:100%;justify-content:center;font-size:12px;">⭐ Upgrade to Pro</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TAB BAR (mobile) -->
+    <div class="tab-bar" style="display:none;" id="mobile-tabs">
+      <div class="tab active">Overview</div>
+      <div class="tab">Tests</div>
+      <div class="tab">MCQs</div>
+      <div class="tab">Profile</div>
+    </div>
+
+    <div id="section-overview">
+      <div class="page-title">Good Morning, Rahul 👋</div>
+      <div class="page-sub">Keep up the momentum — you have a <strong style="color:var(--green);">5-day streak!</strong></div>
+
+      <!-- STATS -->
+      <div class="stat-grid">
+        <div class="stat-card sc-blue">
+          <div class="stat-icon">📝</div>
+          <div class="stat-val">347</div>
+          <div class="stat-label">MCQs Attempted</div>
+          <div class="stat-change">↑ +23 this week</div>
+        </div>
+        <div class="stat-card sc-green">
+          <div class="stat-icon">✅</div>
+          <div class="stat-val">71%</div>
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-change">↑ +3% vs last week</div>
+        </div>
+        <div class="stat-card sc-gold">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-val">8</div>
+          <div class="stat-label">Tests Taken</div>
+          <div class="stat-change">↑ 2 this month</div>
+        </div>
+        <div class="stat-card sc-red">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-val">5</div>
+          <div class="stat-label">Day Streak</div>
+          <div class="stat-change">Keep it going!</div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div>
+          <!-- SUBJECT ACCURACY -->
+          <div class="card">
+            <div class="card-head">
+              <h3>📊 Subject-wise Accuracy</h3>
+              <a href="mcq.html" class="btn btn-outline btn-sm">Practice →</a>
+            </div>
+            <div class="card-body">
+              <div class="prog-item">
+                <div class="prog-head"><span class="prog-label">🏦 Banking Awareness</span><span class="prog-val">84% · 210/250</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:84%;background:var(--blue2);"></div></div>
+              </div>
+              <div class="prog-item">
+                <div class="prog-head"><span class="prog-label">📋 PPB — JAIIB</span><span class="prog-val">72% · 65/90</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:72%;background:var(--green);"></div></div>
+              </div>
+              <div class="prog-item">
+                <div class="prog-head"><span class="prog-label">🔢 Quantitative Aptitude</span><span class="prog-val">65% · 45/70</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:65%;background:var(--gold);"></div></div>
+              </div>
+              <div class="prog-item" style="margin-bottom:0;">
+                <div class="prog-head"><span class="prog-label">🧠 Reasoning Ability</span><span class="prog-val">58% · 32/55</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:58%;background:var(--red);"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RECENT TESTS -->
+          <div class="card">
+            <div class="card-head">
+              <h3>🎯 Recent Mock Tests</h3>
+              <a href="mcq.html?type=mock" class="btn btn-primary btn-sm">Take New Test</a>
+            </div>
+            <div class="card-body">
+              <div class="test-row">
+                <div class="test-icon">📋</div>
+                <div class="test-info"><h4>JAIIB PPB Full Test #2</h4><p>7 May 2026 · 50 Qs · 28 min</p></div>
+                <div class="test-score">36/50<span>Rank #420</span></div>
+              </div>
+              <div class="test-row">
+                <div class="test-icon" style="background:var(--gold2);">🏅</div>
+                <div class="test-info"><h4>Banking Awareness Quiz</h4><p>5 May 2026 · 30 Qs · 18 min</p></div>
+                <div class="test-score">24/30<span>80%</span></div>
+              </div>
+              <div class="test-row">
+                <div class="test-icon" style="background:var(--green2);">📋</div>
+                <div class="test-info"><h4>JAIIB PPB Full Test #1</h4><p>2 May 2026 · 50 Qs · 32 min</p></div>
+                <div class="test-score" style="color:var(--gold);">30/50<span>60%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div>
+          <div class="upgrade-card">
+            <div class="uc-icon">⭐</div>
+            <div class="uc-title">Upgrade to Pro</div>
+            <div class="uc-sub">Unlock unlimited MCQs, all mock tests, JAIIB/CAIIB complete course and PDF downloads.</div>
+            <a href="login.html#register" class="btn" style="background:#fff;color:var(--blue);width:100%;justify-content:center;font-size:13px;">View Plans — from ₹299/mo</a>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>📋 Recent Activity</h3></div>
+            <div class="card-body" style="padding:12px 16px;">
+              <div class="activity-item">
+                <div class="act-dot" style="background:var(--green);"></div>
+                <div class="act-body"><p>Completed JAIIB PPB Test #2 — scored 72%</p><span>Today, 10:15 AM</span></div>
+              </div>
+              <div class="activity-item">
+                <div class="act-dot" style="background:var(--blue2);"></div>
+                <div class="act-body"><p>Attempted 18 Banking Awareness MCQs</p><span>Today, 9:00 AM</span></div>
+              </div>
+              <div class="activity-item">
+                <div class="act-dot" style="background:var(--gold);"></div>
+                <div class="act-body"><p>Downloaded JAIIB PPB Notes PDF</p><span>Yesterday, 8:30 PM</span></div>
+              </div>
+              <div class="activity-item" style="border-bottom:none;">
+                <div class="act-dot" style="background:var(--gray3);"></div>
+                <div class="act-body"><p>Completed Daily Quiz — 8/10 correct</p><span>Yesterday, 7:00 AM</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>🎯 Today's Goal</h3></div>
+            <div class="card-body">
+              <div class="prog-item">
+                <div class="prog-head"><span class="prog-label" style="font-size:12px;">Daily Quiz</span><span class="prog-val" style="color:var(--green);font-weight:600;">✅ Done</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:100%;background:var(--green);"></div></div>
+              </div>
+              <div class="prog-item">
+                <div class="prog-head"><span class="prog-label" style="font-size:12px;">20 MCQs</span><span class="prog-val">13/20</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:65%;background:var(--blue2);"></div></div>
+              </div>
+              <div class="prog-item" style="margin-bottom:12px;">
+                <div class="prog-head"><span class="prog-label" style="font-size:12px;">Read Notes (30 min)</span><span class="prog-val">Pending</span></div>
+                <div class="prog-track"><div class="prog-fill" style="width:0%;background:var(--gray3);"></div></div>
+              </div>
+              <a href="mcq.html" class="btn btn-primary" style="width:100%;justify-content:center;font-size:13px;">Continue Practising →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE SECTION -->
+    <div id="section-profile" style="display:none;">
+      <div class="page-title">Profile Settings</div>
+      <div class="page-sub">Update your personal information.</div>
+      <div class="card" style="max-width:600px;">
+        <div class="card-head"><h3>👤 Personal Information</h3></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">First Name</label><input type="text" value="Rahul" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Last Name</label><input type="text" value="Sharma" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
+          </div>
+          <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Email Address</label><input type="email" value="rahul@sbi.co.in" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;background:var(--gray2);" readonly></div>
+          <div style="margin-bottom:16px;"><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Mobile Number</label><input type="tel" value="+91 98765 43210" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
+          <button class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other sections placeholder -->
+    <div id="section-courses" style="display:none;">
+      <div class="page-title">My Courses</div>
+      <div class="page-sub">You are on the Free plan. <a href="login.html#register" style="color:var(--blue2);font-weight:600;">Upgrade to access courses →</a></div>
+      <div style="background:#fff;border:1px solid var(--gray3);border-radius:12px;padding:48px;text-align:center;">
+        <div style="font-size:48px;margin-bottom:12px;">🎓</div>
+        <div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:6px;">No Courses Yet</div>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:18px;">Browse our courses and enrol to get started.</div>
+        <a href="courses.html" class="btn btn-primary">Browse Courses →</a>
+      </div>
+    </div>
+
+    <div id="section-tests" style="display:none;">
+      <div class="page-title">My Test History</div>
+      <a href="mcq.html?type=mock" class="btn btn-primary" style="margin-bottom:20px;">+ Take New Test</a>
+      <div class="card">
+        <div class="card-body">
+          <div class="test-row"><div class="test-icon">📋</div><div class="test-info"><h4>JAIIB PPB Full Test #2</h4><p>7 May 2026</p></div><div class="test-score">36/50<span>72% · #420</span></div></div>
+          <div class="test-row"><div class="test-icon" style="background:var(--gold2);">🏅</div><div class="test-info"><h4>Banking Awareness Quiz</h4><p>5 May 2026</p></div><div class="test-score">24/30<span>80%</span></div></div>
+          <div class="test-row"><div class="test-icon" style="background:var(--green2);">📋</div><div class="test-info"><h4>JAIIB PPB Full Test #1</h4><p>2 May 2026</p></div><div class="test-score" style="color:var(--gold);">30/50<span>60%</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-mcqs" style="display:none;">
+      <div class="page-title">MCQ History</div>
+      <div class="page-sub">Your recent practice sessions.</div>
+      <a href="mcq.html" class="btn btn-primary" style="margin-bottom:20px;">Practice More MCQs →</a>
+      <div class="card"><div class="card-body"><p style="color:var(--gray);font-size:13px;text-align:center;padding:20px;">MCQ history will appear here after you practice more questions.</p></div></div>
+    </div>
+
+    <div id="section-subscription" style="display:none;">
+      <div class="page-title">Subscription</div>
+      <div class="page-sub">Manage your plan.</div>
+      <div class="card" style="max-width:500px;">
+        <div class="card-body" style="text-align:center;padding:32px;">
+          <div style="font-size:40px;margin-bottom:12px;">🆓</div>
+          <div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:6px;">You are on Free Plan</div>
+          <div style="font-size:13px;color:var(--gray);margin-bottom:20px;line-height:1.65;">Upgrade to Pro (₹599/mo) to unlock unlimited MCQs, all mock tests, JAIIB and CAIIB courses.</div>
+          <a href="login.html#register" class="btn btn-gold" style="justify-content:center;">⭐ Upgrade to Pro — ₹599/mo</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function switchSection(id) {
+  document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
+  document.getElementById('section-' + id).style.display = 'block';
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>

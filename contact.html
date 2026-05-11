@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Bankers Colony</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--blue:#1E40AF;--blue2:#2563EB;--blue3:#DBEAFE;--gold:#D97706;--green:#059669;--green2:#D1FAE5;--red:#DC2626;--gray:#6B7280;--gray2:#F3F4F6;--gray3:#E5E7EB;--dark:#111827;}
+body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--gray2);}
+a{text-decoration:none;color:inherit;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:8px;font-size:13.5px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--blue2);color:#fff;width:100%;justify-content:center;}
+.btn-primary:hover{background:var(--blue);}
+.btn-sm{padding:6px 13px;font-size:12.5px;}
+.btn-outline{background:transparent;border:1.5px solid var(--gray3);color:var(--dark);}
+.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);}
+.container{max-width:1100px;margin:0 auto;padding:0 20px;}
+.header{background:#fff;border-bottom:1px solid var(--gray3);height:62px;display:flex;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+.header-inner{display:flex;align-items:center;gap:14px;width:100%;}
+.logo-name{font-family:'Merriweather',serif;font-size:17px;font-weight:900;color:var(--blue);}
+.logo-name span{color:var(--gold);}
+.page-hero{background:linear-gradient(135deg,#1E3A8A,var(--blue2));padding:44px 0 40px;color:#fff;text-align:center;}
+.ph-title{font-family:'Merriweather',serif;font-size:30px;font-weight:900;margin-bottom:8px;}
+.ph-sub{font-size:14px;color:rgba(255,255,255,.65);}
+.main-wrap{padding:36px 0 56px;}
+.grid{display:grid;grid-template-columns:1fr 340px;gap:28px;}
+.form-card{background:#fff;border:1px solid var(--gray3);border-radius:12px;overflow:hidden;}
+.fc-head{padding:18px 22px;border-bottom:1px solid var(--gray3);background:var(--gray2);}
+.fc-head h2{font-size:16px;font-weight:700;color:var(--dark);}
+.fc-head p{font-size:13px;color:var(--gray);margin-top:2px;}
+.fc-body{padding:22px;}
+.cat-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
+.cat-pill{padding:6px 14px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray3);background:#fff;color:var(--gray);transition:all .2s;}
+.cat-pill.active,.cat-pill:hover{background:var(--blue2);color:#fff;border-color:var(--blue2);}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--gray);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+.field input,.field select,.field textarea{width:100%;padding:10px 13px;border:1.5px solid var(--gray3);border-radius:8px;font-size:13.5px;font-family:'Inter',sans-serif;outline:none;color:var(--dark);transition:border-color .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue2);}
+.field textarea{min-height:120px;resize:vertical;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.success-banner{background:var(--green2);border:1px solid rgba(5,150,105,.2);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:12px;margin-bottom:18px;display:none;}
+.success-banner.show{display:flex;}
+.info-card{background:#fff;border:1px solid var(--gray3);border-radius:12px;padding:20px;margin-bottom:14px;}
+.info-card h4{font-size:13.5px;font-weight:700;color:var(--dark);margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+.info-card p{font-size:13px;color:var(--gray);line-height:1.6;}
+.info-card a{color:var(--blue2);font-weight:600;}
+.faq-item{border-bottom:1px solid var(--gray3);}
+.faq-q{padding:13px 18px;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:var(--dark);}
+.faq-q:hover{color:var(--blue2);}
+.faq-a{padding:0 18px 13px;font-size:13px;color:var(--gray);line-height:1.65;display:none;}
+.faq-a.show{display:block;}
+.footer{background:var(--dark);padding:18px;text-align:center;color:rgba(255,255,255,.3);font-size:12px;margin-top:32px;}
+.footer a{color:rgba(255,255,255,.4);margin:0 8px;}
+@media(max-width:900px){.grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.frow{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="header"><div class="container header-inner">
+  <a href="index.html" class="logo-name">Bankers<span>Colony</span></a>
+  <div style="margin-left:auto;display:flex;gap:8px;">
+    <a href="login.html" class="btn-outline btn btn-sm">Login</a>
+    <a href="login.html#register" class="btn btn-sm" style="background:var(--blue2);color:#fff;">Join Free</a>
+  </div>
+</div></header>
+
+<div class="page-hero">
+  <h1 class="ph-title">📬 Contact Us</h1>
+  <p class="ph-sub">We respond to all queries within 24 hours on business days (Mon–Sat)</p>
+</div>
+
+<div class="main-wrap"><div class="container"><div class="grid">
+
+  <div>
+    <div class="form-card">
+      <div class="fc-head"><h2>Send Us a Message</h2><p>Select your query type and fill the form below.</p></div>
+      <div class="fc-body">
+        <div class="success-banner" id="success-banner">
+          <span style="font-size:28px;">✅</span>
+          <div><strong style="display:block;color:var(--green);font-size:15px;">Message Sent!</strong><span style="font-size:13px;color:var(--gray);">We will respond within 24 hours on business days.</span></div>
+        </div>
+        <div class="cat-pills">
+          <div class="cat-pill active" onclick="selectCat(this)">🎓 Exam Help</div>
+          <div class="cat-pill" onclick="selectCat(this)">💳 Payment / Subscription</div>
+          <div class="cat-pill" onclick="selectCat(this)">📝 MCQ / Content</div>
+          <div class="cat-pill" onclick="selectCat(this)">📢 Advertise</div>
+          <div class="cat-pill" onclick="selectCat(this)">🐛 Technical Issue</div>
+          <div class="cat-pill" onclick="selectCat(this)">💬 Other</div>
+        </div>
+        <div class="frow">
+          <div class="field"><label>Full Name *</label><input type="text" id="c-name" placeholder="Rahul Sharma"></div>
+          <div class="field"><label>Email *</label><input type="email" id="c-email" placeholder="your@email.com"></div>
+        </div>
+        <div class="field"><label>Subject *</label><input type="text" id="c-subject" placeholder="Brief description of your query"></div>
+        <div class="field"><label>Message *</label><textarea id="c-message" placeholder="Please describe your query in detail. For payment issues, include your Razorpay payment ID."></textarea></div>
+        <button class="btn btn-primary" onclick="submitContact()">📬 Send Message →</button>
+        <p style="font-size:11.5px;color:var(--gray);text-align:center;margin-top:10px;">By submitting you agree to our <a href="privacy.html">Privacy Policy</a></p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="form-card" style="margin-top:20px;">
+      <div class="fc-head"><h2>❓ Frequently Asked Questions</h2></div>
+      <div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">How do I cancel my subscription? <span>▾</span></div><div class="faq-a">Log in → Dashboard → Subscription → Cancel. Your access continues until the end of the billing period. For a refund, contact us within 7 days of payment.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">I paid but my account still shows Free plan <span>▾</span></div><div class="faq-a">Log out and log back in — it usually resolves in 15 minutes. If not, contact us with your Razorpay Payment ID (starts with "pay_") and we will fix it within 2 hours.</div></div>
+        <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">How do I report a wrong answer in an MCQ? <span>▾</span></div><div class="faq-a">Use this form with category "MCQ / Content". Mention the MCQ ID (shown as #BA-001 on the practice page) and explain why the answer is incorrect with a reference.</div></div>
+        <div class="faq-item" style="border-bottom:none;"><div class="faq-q" onclick="toggleFAQ(this)">Can I get a refund? <span>▾</span></div><div class="faq-a">Yes. We offer a full 7-day refund guarantee on first subscription payments. Contact us with your payment details. See our <a href="refund.html">Refund Policy</a> for full details.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="info-card"><h4>📧 Email Support</h4><p>General queries: <a href="mailto:support@bankerscolony.com">support@bankerscolony.com</a><br>Billing: <a href="mailto:billing@bankerscolony.com">billing@bankerscolony.com</a></p></div>
+    <div class="info-card"><h4>✈ Telegram Community</h4><p>Join 15,000+ members for instant help, exam tips and daily awareness. <a href="#">Join @BankersColony →</a></p></div>
+    <div class="info-card"><h4>💬 WhatsApp Group</h4><p>Join our study groups for your specific exam. <a href="#">Join WhatsApp →</a></p></div>
+    <div class="info-card">
+      <h4>🕐 Support Hours</h4>
+      <p style="margin-bottom:6px;">Mon–Fri: 9:00 AM – 7:00 PM IST<br>Saturday: 10:00 AM – 4:00 PM IST<br>Sunday: Closed</p>
+      <div style="background:var(--green2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:5px;margin-top:8px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--green);"></div> Currently Open
+      </div>
+    </div>
+  </div>
+
+</div></div></div>
+
+<div class="footer">© 2026 BankersColony.com &nbsp;|&nbsp;<a href="index.html">Home</a><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund Policy</a></div>
+
+<script>
+function selectCat(el){document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
+function submitContact(){
+  const name=document.getElementById('c-name').value.trim();
+  const email=document.getElementById('c-email').value.trim();
+  const subject=document.getElementById('c-subject').value.trim();
+  const msg=document.getElementById('c-message').value.trim();
+  if(!name||!email||!subject||msg.length<20){alert('Please fill all fields correctly.');return;}
+  document.getElementById('success-banner').classList.add('show');
+  document.querySelector('.form-card .fc-body').style.opacity='.4';
+  document.querySelector('.form-card .fc-body').style.pointerEvents='none';
+}
+function toggleFAQ(el){
+  const ans=el.nextElementSibling;
+  const open=ans.classList.contains('show');
+  document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('show'));
+  if(!open)ans.classList.add('show');
+}
+</script>
+</body>
+</html>

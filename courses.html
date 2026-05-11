@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courses & Study Material — Bankers Colony</title>
+<meta name="description" content="Complete courses for JAIIB, CAIIB, Bank Promotion, Foreign Posting, IBPS, SBI, RBI exams. Free and Premium study material, PDF notes, and mock tests.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#1E40AF;--blue2:#2563EB;--blue3:#DBEAFE;--blue4:#EFF6FF;
+  --gold:#D97706;--gold2:#FEF3C7;
+  --green:#059669;--green2:#D1FAE5;
+  --red:#DC2626;--red2:#FEE2E2;
+  --gray:#6B7280;--gray2:#F3F4F6;--gray3:#E5E7EB;--dark:#111827;
+  --white:#fff;--body:#F9FAFB;
+  --shadow:0 1px 3px rgba(0,0,0,.1);
+  --shadow2:0 4px 12px rgba(0,0,0,.08);
+  --shadow3:0 10px 24px rgba(0,0,0,.1);
+  --radius:8px;--radius2:12px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--body);}
+a{text-decoration:none;color:inherit;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--radius);font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--blue2);color:#fff;}
+.btn-primary:hover{background:var(--blue);transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1.5px solid var(--gray3);color:var(--dark);}
+.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{background:#B45309;}
+.btn-sm{padding:6px 13px;font-size:12.5px;}
+.btn-white{background:#fff;color:var(--blue2);}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px;}
+.badge-free{background:var(--green2);color:var(--green);}
+.badge-pro{background:var(--blue3);color:var(--blue2);}
+.badge-elite{background:#F3E8FF;color:#7C3AED;}
+.badge-new{background:var(--red2);color:var(--red);}
+.badge-hot{background:#FDE8D8;color:#C2410C;}
+.container{max-width:1200px;margin:0 auto;padding:0 20px;}
+
+/* ── HEADER ── */
+.header{background:#fff;border-bottom:1px solid var(--gray3);position:sticky;top:0;z-index:500;box-shadow:var(--shadow);}
+.header-inner{display:flex;align-items:center;gap:14px;height:62px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo-icon{width:38px;height:38px;background:var(--blue2);border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.logo-icon svg{width:20px;height:20px;fill:#fff;}
+.logo-name{font-family:'Merriweather',serif;font-size:17px;font-weight:900;color:var(--blue);}
+.logo-name span{color:var(--gold);}
+.header-nav{display:flex;gap:2px;margin-left:14px;}
+.hn{padding:7px 13px;border-radius:var(--radius);font-size:13px;font-weight:500;color:var(--gray);transition:all .15s;}
+.hn:hover,.hn.active{background:var(--blue4);color:var(--blue2);}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none;}
+.hamburger span{width:20px;height:2px;background:var(--dark);border-radius:2px;}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{background:#fff;border-bottom:1px solid var(--gray3);padding:10px 0;}
+.breadcrumb-inner{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--gray);}
+.breadcrumb-inner a{color:var(--blue2);}
+.breadcrumb-inner span{color:var(--gray3);}
+
+/* ── HERO ── */
+.courses-hero{background:linear-gradient(135deg,#1E3A8A,#1E40AF);padding:44px 0 40px;color:#fff;}
+.ch-inner{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;}
+.ch-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#FCD34D;margin-bottom:8px;}
+.ch-title{font-family:'Merriweather',serif;font-size:30px;font-weight:900;line-height:1.25;margin-bottom:8px;}
+.ch-sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.7;}
+.ch-stats{display:flex;gap:24px;flex-wrap:wrap;}
+.cs-item strong{display:block;font-size:22px;font-weight:800;color:#FCD34D;}
+.cs-item span{font-size:12px;color:rgba(255,255,255,.55);}
+
+/* ── FILTER SIDEBAR ── */
+.main-layout{display:grid;grid-template-columns:240px 1fr;gap:24px;padding:28px 0 48px;}
+
+.filter-sidebar{}
+.filter-card{background:#fff;border:1px solid var(--gray3);border-radius:var(--radius2);overflow:hidden;margin-bottom:16px;}
+.fc-head{padding:12px 16px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;justify-content:space-between;}
+.fc-head h4{font-size:13px;font-weight:700;color:var(--dark);}
+.fc-clear{font-size:11.5px;color:var(--blue2);cursor:pointer;font-weight:600;}
+.fc-body{padding:12px 0;}
+.fc-item{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;cursor:pointer;font-size:13px;color:var(--dark);transition:background .15s;border-left:3px solid transparent;}
+.fc-item:hover{background:var(--blue4);color:var(--blue2);}
+.fc-item.active{background:var(--blue4);border-left-color:var(--blue2);color:var(--blue2);font-weight:600;}
+.fc-count{font-size:11px;color:var(--gray);background:var(--gray2);padding:1px 7px;border-radius:8px;}
+.fc-item.active .fc-count{background:var(--blue3);color:var(--blue2);}
+
+/* ── RIGHT CONTENT ── */
+.content-area{}
+
+/* SEARCH + SORT BAR */
+.search-sort-bar{background:#fff;border:1px solid var(--gray3);border-radius:var(--radius2);padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.ss-search{flex:1;min-width:200px;position:relative;}
+.ss-search input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid var(--gray3);border-radius:var(--radius);font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+.ss-search input:focus{border-color:var(--blue2);}
+.ss-search::before{content:'🔍';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;}
+.ss-sort{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray);}
+.ss-sort select{padding:8px 12px;border:1.5px solid var(--gray3);border-radius:var(--radius);font-size:13px;font-family:'Inter',sans-serif;outline:none;color:var(--dark);}
+.result-count{font-size:13px;color:var(--gray);margin-left:auto;}
+
+/* COURSE TABS */
+.view-tabs{display:flex;gap:0;border-bottom:2px solid var(--gray3);margin-bottom:20px;}
+.vtab{padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gray);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.vtab.active{color:var(--blue2);border-bottom-color:var(--blue2);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* COURSE GRID */
+.courses-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.course-card{background:#fff;border:1px solid var(--gray3);border-radius:var(--radius2);overflow:hidden;transition:all .2s;cursor:pointer;}
+.course-card:hover{box-shadow:var(--shadow3);transform:translateY(-2px);}
+.course-card.hidden{display:none;}
+.cc-thumb{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;}
+.ct-blue{background:linear-gradient(135deg,#DBEAFE,#BFDBFE);}
+.ct-gold{background:linear-gradient(135deg,#FEF3C7,#FDE68A);}
+.ct-green{background:linear-gradient(135deg,#D1FAE5,#A7F3D0);}
+.ct-purple{background:linear-gradient(135deg,#EDE9FE,#DDD6FE);}
+.ct-red{background:linear-gradient(135deg,#FEE2E2,#FECACA);}
+.ct-teal{background:linear-gradient(135deg,#CCFBF1,#99F6E4);}
+.cc-badges{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+.cc-body{padding:16px;}
+.cc-title{font-size:14.5px;font-weight:700;color:var(--dark);margin-bottom:5px;line-height:1.35;}
+.cc-sub{font-size:12.5px;color:var(--gray);margin-bottom:12px;line-height:1.55;}
+.cc-details{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.cc-detail{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--gray);}
+.cc-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--gray3);}
+.cc-price{font-size:17px;font-weight:800;color:var(--blue2);}
+.cc-price.free{color:var(--green);}
+
+/* COURSE LIST VIEW */
+.course-list-item{background:#fff;border:1px solid var(--gray3);border-radius:var(--radius2);padding:18px;display:flex;gap:16px;align-items:flex-start;transition:all .2s;cursor:pointer;margin-bottom:12px;}
+.course-list-item:hover{box-shadow:var(--shadow2);border-color:var(--blue2);}
+.cli-icon{width:72px;height:72px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
+.cli-body{flex:1;}
+.cli-title{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.cli-sub{font-size:13px;color:var(--gray);margin-bottom:8px;line-height:1.55;}
+.cli-meta{display:flex;gap:14px;flex-wrap:wrap;}
+.cli-meta-item{font-size:12px;color:var(--gray);display:flex;align-items:center;gap:4px;}
+.cli-right{text-align:right;flex-shrink:0;}
+.cli-price{font-size:18px;font-weight:800;color:var(--blue2);margin-bottom:8px;}
+.cli-price.free{color:var(--green);}
+
+/* PDF SECTION */
+.pdf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.pdf-card{background:#fff;border:1px solid var(--gray3);border-radius:var(--radius2);padding:16px;transition:all .2s;cursor:pointer;}
+.pdf-card:hover{box-shadow:var(--shadow2);border-color:var(--blue2);}
+.pdf-icon{font-size:36px;margin-bottom:10px;}
+.pdf-title{font-size:13.5px;font-weight:700;color:var(--dark);margin-bottom:5px;line-height:1.35;}
+.pdf-meta{font-size:12px;color:var(--gray);margin-bottom:12px;}
+.pdf-footer{display:flex;align-items:center;justify-content:space-between;}
+.pdf-size{font-size:11px;color:var(--gray);}
+
+/* FEATURED COURSE BANNER */
+.featured-banner{background:linear-gradient(135deg,var(--blue),#1E3A8A);border-radius:var(--radius2);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;gap:20px;color:#fff;}
+.fb-icon{font-size:52px;flex-shrink:0;}
+.fb-body{flex:1;}
+.fb-title{font-family:'Merriweather',serif;font-size:20px;font-weight:700;margin-bottom:6px;}
+.fb-sub{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:14px;line-height:1.6;}
+.fb-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.fb-tag{background:rgba(255,255,255,.12);font-size:11px;padding:3px 10px;border-radius:10px;color:rgba(255,255,255,.8);}
+.fb-right{text-align:center;flex-shrink:0;}
+.fb-price{font-size:28px;font-weight:800;color:#FCD34D;}
+.fb-period{font-size:12px;color:rgba(255,255,255,.5);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;}
+.es-icon{font-size:52px;margin-bottom:14px;}
+.es-title{font-size:17px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.es-sub{font-size:13px;color:var(--gray);}
+
+/* STICKY CTA (mobile) */
+.sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--gray3);padding:10px 20px;z-index:400;}
+
+/* FOOTER */
+.simple-footer{background:var(--dark);padding:20px;text-align:center;color:rgba(255,255,255,.3);font-size:12px;margin-top:40px;}
+.simple-footer a{color:rgba(255,255,255,.4);margin:0 10px;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.main-layout{grid-template-columns:1fr;}.filter-sidebar{display:none;}.courses-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.courses-grid,.pdf-grid{grid-template-columns:1fr;}.ch-inner{grid-template-columns:1fr;}.ch-stats{display:none;}.header-nav{display:none;}.hamburger{display:flex;}.sticky-cta{display:block;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><polygon points="12,2 22,9 2,9" opacity=".9"/><rect x="4" y="10" width="2.5" height="9" rx="1"/><rect x="8.5" y="10" width="2.5" height="9" rx="1"/><rect x="13" y="10" width="2.5" height="9" rx="1"/><rect x="17.5" y="10" width="2.5" height="9" rx="1"/><rect x="2" y="19" width="20" height="2.5" rx="1"/></svg>
+      </div>
+      <div class="logo-name">Bankers<span>Colony</span></div>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html" class="hn">Home</a>
+      <a href="courses.html" class="hn active">Courses</a>
+      <a href="mcq.html" class="hn">Free MCQs</a>
+      <a href="courses.html?type=pdf" class="hn">PDF Notes</a>
+    </nav>
+    <div class="header-right">
+      <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="login.html#register" class="btn btn-primary btn-sm">Join Free</a>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="container breadcrumb-inner">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <span id="bc-current">All Courses</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="courses-hero">
+  <div class="container ch-inner">
+    <div>
+      <div class="ch-label">Study Material</div>
+      <h1 class="ch-title" id="hero-title">All Courses & Study Material</h1>
+      <p class="ch-sub" id="hero-sub">Expert-curated courses for every banking exam. Created by serving bank officers and IIBF-certified professionals.</p>
+    </div>
+    <div class="ch-stats">
+      <div class="cs-item"><strong>12</strong><span>Courses</span></div>
+      <div class="cs-item"><strong>5,000+</strong><span>MCQs</span></div>
+      <div class="cs-item"><strong>200+</strong><span>PDF Notes</span></div>
+      <div class="cs-item"><strong>50K+</strong><span>Students</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="container">
+  <div class="main-layout">
+
+    <!-- FILTER SIDEBAR -->
+    <aside class="filter-sidebar">
+
+      <div class="filter-card">
+        <div class="fc-head">
+          <h4>📚 Category</h4>
+          <span class="fc-clear" onclick="clearFilters()">Clear</span>
+        </div>
+        <div class="fc-body">
+          <div class="fc-item active" onclick="filterBy('cat','all',this)"><span>All Categories</span><span class="fc-count">12</span></div>
+          <div class="fc-item" onclick="filterBy('cat','professional',this)"><span>🏛 Professional Exams</span><span class="fc-count">4</span></div>
+          <div class="fc-item" onclick="filterBy('cat','competitive',this)"><span>🎓 Competitive Exams</span><span class="fc-count">5</span></div>
+          <div class="fc-item" onclick="filterBy('cat','pdf',this)"><span>📄 PDF Notes Only</span><span class="fc-count">3</span></div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="fc-head"><h4>💰 Access</h4></div>
+        <div class="fc-body">
+          <div class="fc-item active" onclick="filterBy('access','all',this)"><span>All</span><span class="fc-count">12</span></div>
+          <div class="fc-item" onclick="filterBy('access','free',this)"><span>✅ Free</span><span class="fc-count">3</span></div>
+          <div class="fc-item" onclick="filterBy('access','pro',this)"><span>⭐ Pro Plan</span><span class="fc-count">6</span></div>
+          <div class="fc-item" onclick="filterBy('access','elite',this)"><span>💎 Elite Plan</span><span class="fc-count">3</span></div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="fc-head"><h4>🎯 Exam Type</h4></div>
+        <div class="fc-body">
+          <div class="fc-item" onclick="filterBy('exam','jaiib',this)"><span>📋 JAIIB</span><span class="fc-count">4</span></div>
+          <div class="fc-item" onclick="filterBy('exam','caiib',this)"><span>🏅 CAIIB</span><span class="fc-count">3</span></div>
+          <div class="fc-item" onclick="filterBy('exam','promotion',this)"><span>📈 Bank Promotion</span><span class="fc-count">2</span></div>
+          <div class="fc-item" onclick="filterBy('exam','foreign',this)"><span>✈ Foreign Posting</span><span class="fc-count">1</span></div>
+          <div class="fc-item" onclick="filterBy('exam','ibps',this)"><span>🎓 IBPS PO/Clerk</span><span class="fc-count">2</span></div>
+          <div class="fc-item" onclick="filterBy('exam','sbi',this)"><span>🏦 SBI PO/Clerk</span><span class="fc-count">2</span></div>
+        </div>
+      </div>
+
+      <!-- Upgrade CTA -->
+      <div style="background:linear-gradient(135deg,var(--blue),#1E3A8A);border-radius:var(--radius2);padding:18px;color:#fff;text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">⭐</div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:5px;">Unlock All Courses</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:12px;">From ₹599/month. Unlimited MCQs, all PDF notes, all mock tests.</div>
+        <a href="login.html#register" class="btn btn-white btn-sm" style="width:100%;justify-content:center;color:var(--blue);">View Plans →</a>
+      </div>
+
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+
+      <!-- SEARCH + SORT -->
+      <div class="search-sort-bar">
+        <div class="ss-search">
+          <input type="text" id="search-input" placeholder="Search courses, subjects, topics…" oninput="searchCourses(this.value)">
+        </div>
+        <div class="ss-sort">
+          Sort:
+          <select onchange="sortCourses(this.value)">
+            <option value="popular">Most Popular</option>
+            <option value="newest">Newest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="free-first">Free First</option>
+          </select>
+        </div>
+        <div class="result-count" id="result-count">12 results</div>
+      </div>
+
+      <!-- VIEW TABS -->
+      <div class="view-tabs">
+        <div class="vtab active" onclick="switchView('courses',this)">📚 All Courses</div>
+        <div class="vtab" onclick="switchView('pdf',this)">📄 PDF Notes</div>
+        <div class="vtab" onclick="switchView('bundles',this)">📦 Course Bundles</div>
+      </div>
+
+      <!-- ── ALL COURSES ── -->
+      <div class="tab-content active" id="view-courses">
+
+        <!-- Featured Banner -->
+        <div class="featured-banner">
+          <div class="fb-icon">📋</div>
+          <div class="fb-body">
+            <div class="fb-title">JAIIB 2026 — Complete Package</div>
+            <div class="fb-sub">All 4 papers in one subscription. Expert notes, 800+ MCQs, 15 full mock tests, PDF downloads. Updated for latest syllabus.</div>
+            <div class="fb-tags">
+              <span class="fb-tag">PPB</span>
+              <span class="fb-tag">IE&IB</span>
+              <span class="fb-tag">AFM</span>
+              <span class="fb-tag">RBWM</span>
+              <span class="fb-tag">800+ MCQs</span>
+              <span class="fb-tag">40 PDFs</span>
+            </div>
+            <a href="login.html#register" class="btn btn-white btn-sm" style="color:var(--blue);">Enrol Now →</a>
+          </div>
+          <div class="fb-right">
+            <div class="fb-price">₹599</div>
+            <div class="fb-period">/month</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;">Cancel anytime</div>
+          </div>
+        </div>
+
+        <!-- Course Grid -->
+        <div class="courses-grid" id="courses-container">
+
+          <div class="course-card" data-cat="professional" data-access="pro" data-exam="jaiib" data-price="599" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-blue">📋
+              <div class="cc-badges"><span class="badge badge-hot">HOT</span><span class="badge badge-pro">Pro</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">JAIIB — Complete Preparation 2026</div>
+              <div class="cc-sub">All 4 papers: PPB, IE&IB, AFM, RBWM. Chapter notes, MCQs, full mock tests and PDF downloads.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 800 MCQs</span>
+                <span class="cc-detail">📄 40 PDFs</span>
+                <span class="cc-detail">🎯 15 Tests</span>
+                <span class="cc-detail">🎓 1,240 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹599<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="professional" data-access="pro" data-exam="caiib" data-price="699" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-gold">🏅
+              <div class="cc-badges"><span class="badge badge-new">NEW</span><span class="badge badge-pro">Pro</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">CAIIB — Advanced Banking Preparation</div>
+              <div class="cc-sub">ABM, BRBL and all elective papers. Case studies, regulatory updates, and practice papers.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 600 MCQs</span>
+                <span class="cc-detail">📄 30 PDFs</span>
+                <span class="cc-detail">🎯 10 Tests</span>
+                <span class="cc-detail">🎓 840 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹699<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="professional" data-access="pro" data-exam="promotion" data-price="499" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-green">📈
+              <div class="cc-badges"><span class="badge badge-pro">Pro</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">Bank Promotion Exam — Scale I to II</div>
+              <div class="cc-sub">Complete study material for internal promotion exams of SBI, PNB, BOB, Canara, Union Bank and other major PSBs.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 400 MCQs</span>
+                <span class="cc-detail">📄 20 PDFs</span>
+                <span class="cc-detail">🎯 8 Tests</span>
+                <span class="cc-detail">🎓 620 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹499<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="professional" data-access="elite" data-exam="foreign" data-price="499" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-purple">✈️
+              <div class="cc-badges"><span class="badge badge-elite">Elite</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">Foreign Posting Exam Preparation</div>
+              <div class="cc-sub">FEMA, Forex markets, Trade Finance, International Banking, FCNR accounts — complete coverage.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 300 MCQs</span>
+                <span class="cc-detail">📄 15 PDFs</span>
+                <span class="cc-detail">🎯 5 Tests</span>
+                <span class="cc-detail">🎓 380 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹499<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="competitive" data-access="free" data-exam="banking" data-price="0" onclick="location.href='mcq.html'">
+            <div class="cc-thumb ct-teal">🏦
+              <div class="cc-badges"><span class="badge badge-free">FREE</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">Banking Awareness — Free MCQs</div>
+              <div class="cc-sub">1,200+ free questions on Banking Awareness, RBI Policy, Current Affairs. No login required.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 1,200 MCQs</span>
+                <span class="cc-detail">🎯 5 Tests</span>
+                <span class="cc-detail">🎓 18,400 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="mcq.html" class="btn btn-sm" style="background:var(--green);color:#fff;">Practice Free →</a>
+                <div class="cc-price free">FREE</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="competitive" data-access="pro" data-exam="ibps" data-price="399" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-blue">🎓
+              <div class="cc-badges"><span class="badge badge-hot">HOT</span><span class="badge badge-pro">Pro</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">IBPS PO / Clerk — Full Preparation</div>
+              <div class="cc-sub">Quant, Reasoning, English, Banking Awareness, Computer Knowledge. Prelims + Mains coverage.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 1,000 MCQs</span>
+                <span class="cc-detail">📄 25 PDFs</span>
+                <span class="cc-detail">🎯 20 Tests</span>
+                <span class="cc-detail">🎓 4,200 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹399<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="competitive" data-access="pro" data-exam="sbi" data-price="399" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-gold">🏦
+              <div class="cc-badges"><span class="badge badge-pro">Pro</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">SBI PO / Clerk 2026</div>
+              <div class="cc-sub">Complete SBI-specific preparation with previous year patterns, sectional cut-offs, and SBI-focused banking awareness.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 900 MCQs</span>
+                <span class="cc-detail">📄 22 PDFs</span>
+                <span class="cc-detail">🎯 15 Tests</span>
+                <span class="cc-detail">🎓 3,600 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹399<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="course-card" data-cat="competitive" data-access="elite" data-exam="rbi" data-price="799" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-red">🏛
+              <div class="cc-badges"><span class="badge badge-elite">Elite</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">RBI Grade B — Phase I & II</div>
+              <div class="cc-sub">Economics, Finance, Management, ESI, Finance & Management. Full Phase 2 coverage including essay and descriptive.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 800 MCQs</span>
+                <span class="cc-detail">📄 35 PDFs</span>
+                <span class="cc-detail">🎯 10 Tests</span>
+                <span class="cc-detail">🎓 1,100 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹799<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- JAIIB PPB Only -->
+          <div class="course-card" data-cat="professional" data-access="free" data-exam="jaiib" data-price="0" onclick="location.href='mcq.html'">
+            <div class="cc-thumb ct-blue">📗
+              <div class="cc-badges"><span class="badge badge-free">FREE</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">JAIIB PPB — Free MCQ Practice</div>
+              <div class="cc-sub">100 free MCQs on Principles & Practices of Banking. Perfect for getting started with JAIIB prep.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 100 MCQs</span>
+                <span class="cc-detail">🎓 6,800 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="mcq.html" class="btn btn-sm" style="background:var(--green);color:#fff;">Start Free →</a>
+                <div class="cc-price free">FREE</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Promotion Scale II-III -->
+          <div class="course-card" data-cat="professional" data-access="elite" data-exam="promotion" data-price="599" onclick="location.href='login.html#register'">
+            <div class="cc-thumb ct-green">📊
+              <div class="cc-badges"><span class="badge badge-elite">Elite</span></div>
+            </div>
+            <div class="cc-body">
+              <div class="cc-title">Bank Promotion Exam — Scale II to III</div>
+              <div class="cc-sub">Advanced material for Scale II to III promotion. Credit, Risk, Compliance and Leadership modules.</div>
+              <div class="cc-details">
+                <span class="cc-detail">📝 350 MCQs</span>
+                <span class="cc-detail">📄 18 PDFs</span>
+                <span class="cc-detail">🎯 6 Tests</span>
+                <span class="cc-detail">🎓 420 enrolled</span>
+              </div>
+              <div class="cc-footer">
+                <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now</a>
+                <div class="cc-price">₹599<span style="font-size:11px;font-weight:400;color:var(--gray)">/mo</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display:none;">
+          <div class="es-icon">🔍</div>
+          <div class="es-title">No courses found</div>
+          <div class="es-sub">Try a different filter or search term.</div>
+        </div>
+
+      </div>
+
+      <!-- ── PDF NOTES TAB ── -->
+      <div class="tab-content" id="view-pdf">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:13.5px;color:var(--gray);">200+ study notes. Free notes marked ✅. Premium notes require Pro/Elite plan.</div>
+          <div style="display:flex;gap:8px;">
+            <select style="padding:7px 12px;border:1.5px solid var(--gray3);border-radius:var(--radius);font-size:12.5px;font-family:'Inter',sans-serif;outline:none;" onchange="filterPDFs(this.value)">
+              <option value="all">All Exams</option>
+              <option value="jaiib">JAIIB</option>
+              <option value="caiib">CAIIB</option>
+              <option value="promotion">Bank Promotion</option>
+              <option value="general">General Banking</option>
+            </select>
+          </div>
+        </div>
+        <div class="pdf-grid">
+
+          <div class="pdf-card" data-exam="jaiib" onclick="downloadPDF(this,'free')">
+            <div class="pdf-icon">📋</div>
+            <div class="pdf-title">JAIIB PPB — Complete Chapter Notes 2026</div>
+            <div class="pdf-meta">JAIIB · PPB Paper · 180 pages</div>
+            <div class="pdf-footer">
+              <span class="badge badge-free">FREE</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="pdf-size">4.2 MB</span>
+                <button class="btn btn-sm" style="background:var(--green);color:#fff;padding:5px 11px;">⬇ Download</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdf-card" data-exam="general" onclick="downloadPDF(this,'free')">
+            <div class="pdf-icon">🏦</div>
+            <div class="pdf-title">Banking Awareness Handbook 2026</div>
+            <div class="pdf-meta">General Banking · All Exams · 220 pages</div>
+            <div class="pdf-footer">
+              <span class="badge badge-free">FREE</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="pdf-size">6.8 MB</span>
+                <button class="btn btn-sm" style="background:var(--green);color:#fff;padding:5px 11px;">⬇ Download</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdf-card" data-exam="general" onclick="downloadPDF(this,'free')">
+            <div class="pdf-icon">🔢</div>
+            <div class="pdf-title">Quantitative Aptitude Formula Sheet</div>
+            <div class="pdf-meta">All Competitive Exams · 48 pages</div>
+            <div class="pdf-footer">
+              <span class="badge badge-free">FREE</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="pdf-size">1.2 MB</span>
+                <button class="btn btn-sm" style="background:var(--green);color:#fff;padding:5px 11px;">⬇ Download</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdf-card" data-exam="jaiib" onclick="downloadPDF(this,'pro')">
+            <div class="pdf-icon">💰</div>
+            <div class="pdf-title">JAIIB AFM — Complete Notes with Formulas</div>
+            <div class="pdf-meta">JAIIB · AFM Paper · 156 pages</div>
+            <div class="pdf-footer">
+              <span class="badge badge-pro">Pro Plan</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="pdf-size">3.8 MB</span>
+                <button class="btn btn-primary btn-sm">🔒 Unlock</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdf-card" data-exam="caiib" onclick="downloadPDF(this,'pro')">
+            <div class="pdf-icon">📊</div>
+            <div class="pdf-title">CAIIB ABM — Advanced Bank Management Notes</div>
+            <div class="pdf-meta">CAIIB · ABM Paper · 200 pages</div>
+            <div class="pdf-footer">
+              <span class="badge badge-pro">Pro Plan</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="pdf-size">5.4 MB</span>
+                <button class="btn btn-primary btn-sm">🔒 Unlock</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdf-card" data-exam="promotion" onclick="downloadPDF(this,'elite')">
+            <div class="pdf-icon">📈</div>
+            <div class="pdf-title">Bank Promotion Exam — Credit Appraisal Guide</div>
+            <div class="pdf-meta">Promotion Exam · Credit Module · 120 pages</div>
+            <div class="pdf-footer">
+              <span class="badge badge-elite">Elite Plan</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="pdf-size">2.6 MB</span>
+                <button class="btn btn-gold btn-sm">🔒 Unlock</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── BUNDLES TAB ── -->
+      <div class="tab-content" id="view-bundles">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <div class="course-list-item" onclick="location.href='login.html#register'">
+            <div class="cli-icon ct-blue" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE);">📦</div>
+            <div class="cli-body">
+              <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;">
+                <span class="badge badge-hot">BEST VALUE</span>
+                <span class="badge badge-pro">Pro Plan</span>
+              </div>
+              <div class="cli-title">JAIIB + CAIIB Combined Bundle</div>
+              <div class="cli-sub">Complete preparation for both JAIIB (4 papers) and CAIIB (ABM, BRBL, Electives). Everything in one subscription — 1,400+ MCQs, 70+ PDFs, 25 mock tests.</div>
+              <div class="cli-meta">
+                <span class="cli-meta-item">📝 1,400 MCQs</span>
+                <span class="cli-meta-item">📄 70 PDFs</span>
+                <span class="cli-meta-item">🎯 25 Tests</span>
+                <span class="cli-meta-item">🎓 2,100 enrolled</span>
+              </div>
+            </div>
+            <div class="cli-right">
+              <div class="cli-price">₹899<span style="font-size:12px;font-weight:400;color:var(--gray)">/mo</span></div>
+              <div style="font-size:11px;color:var(--green);margin-bottom:8px;">Save ₹399/mo vs buying separately</div>
+              <a href="login.html#register" class="btn btn-primary btn-sm">Enrol Now →</a>
+            </div>
+          </div>
+
+          <div class="course-list-item" onclick="location.href='login.html#register'">
+            <div class="cli-icon" style="background:linear-gradient(135deg,#0D2B45,#1E40AF);font-size:32px;display:flex;align-items:center;justify-content:center;">💎</div>
+            <div class="cli-body">
+              <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;">
+                <span class="badge badge-elite">ELITE — ALL ACCESS</span>
+              </div>
+              <div class="cli-title">Complete Banking Professional Bundle</div>
+              <div class="cli-sub">Every single course on Bankers Colony. JAIIB + CAIIB + Bank Promotion + Foreign Posting + All Competitive Exams. Unlimited MCQs, all PDFs, unlimited mock tests. Priority support.</div>
+              <div class="cli-meta">
+                <span class="cli-meta-item">📝 5,000+ MCQs</span>
+                <span class="cli-meta-item">📄 200+ PDFs</span>
+                <span class="cli-meta-item">🎯 50+ Tests</span>
+                <span class="cli-meta-item">🎓 All Future Courses</span>
+              </div>
+            </div>
+            <div class="cli-right">
+              <div class="cli-price" style="color:#7C3AED;">₹999<span style="font-size:12px;font-weight:400;color:var(--gray)">/mo</span></div>
+              <div style="font-size:11px;color:var(--green);margin-bottom:8px;">Unlimited everything</div>
+              <a href="login.html#register" class="btn btn-gold btn-sm">Get Elite Access →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- STICKY CTA (mobile) -->
+<div class="sticky-cta">
+  <a href="login.html#register" class="btn btn-primary" style="width:100%;justify-content:center;font-size:14px;">⭐ Unlock All Courses from ₹299/mo →</a>
+</div>
+
+<!-- FOOTER -->
+<div class="simple-footer">
+  © 2026 BankersColony.com &nbsp;|&nbsp;
+  <a href="index.html">Home</a>
+  <a href="mcq.html">Free MCQs</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms</a>
+</div>
+
+<script>
+// ── URL param handling ────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const cat = params.get('cat');
+const type = params.get('type');
+
+// Auto-activate filters from URL
+window.addEventListener('DOMContentLoaded', () => {
+  if(type === 'pdf') {
+    switchView('pdf', document.querySelector('.vtab:nth-child(2)'));
+    document.getElementById('hero-title').textContent = 'PDF Study Notes';
+    document.getElementById('hero-sub').textContent = 'Download expert-written study notes for JAIIB, CAIIB, Bank Promotion and competitive exams.';
+    document.getElementById('bc-current').textContent = 'PDF Notes';
+  }
+  if(cat) {
+    const examMap = {
+      jaiib: 'JAIIB',
+      caiib: 'CAIIB',
+      promotion: 'Bank Promotion Exam',
+      foreign: 'Foreign Posting Exam',
+      ibps: 'IBPS PO / Clerk',
+      sbi: 'SBI PO / Clerk',
+      rbi: 'RBI Grade B'
+    };
+    // Filter cards
+    document.querySelectorAll('.course-card').forEach(card => {
+      const cardExam = card.dataset.exam;
+      card.classList.toggle('hidden', cardExam !== cat);
+    });
+    const title = examMap[cat] || cat;
+    document.getElementById('hero-title').textContent = title + ' — Courses & Material';
+    document.getElementById('bc-current').textContent = title;
+    updateCount();
+  }
+});
+
+// ── View switching ────────────────────────────────────────
+function switchView(id, btn) {
+  document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-' + id).classList.add('active');
+}
+
+// ── Course filtering ──────────────────────────────────────
+let activeFilters = { cat: 'all', access: 'all', exam: 'all' };
+
+function filterBy(type, value, btn) {
+  // Update active state in sidebar group
+  btn.closest('.fc-body').querySelectorAll('.fc-item').forEach(i => i.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilters[type] = value;
+  applyFilters();
+}
+
+function applyFilters() {
+  const cards = document.querySelectorAll('.course-card');
+  let visible = 0;
+  const search = document.getElementById('search-input').value.toLowerCase();
+
+  cards.forEach(card => {
+    const matchCat    = activeFilters.cat === 'all' || card.dataset.cat === activeFilters.cat;
+    const matchAccess = activeFilters.access === 'all' || card.dataset.access === activeFilters.access;
+    const matchExam   = activeFilters.exam === 'all' || card.dataset.exam === activeFilters.exam;
+    const matchSearch = !search || card.textContent.toLowerCase().includes(search);
+    const show = matchCat && matchAccess && matchExam && matchSearch;
+    card.classList.toggle('hidden', !show);
+    if(show) visible++;
+  });
+
+  updateCount(visible);
+  document.getElementById('empty-state').style.display = visible === 0 ? 'block' : 'none';
+}
+
+function updateCount(n) {
+  const visible = n ?? document.querySelectorAll('.course-card:not(.hidden)').length;
+  document.getElementById('result-count').textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+}
+
+function searchCourses(val) { applyFilters(); }
+
+function clearFilters() {
+  activeFilters = { cat: 'all', access: 'all', exam: 'all' };
+  document.querySelectorAll('.fc-item').forEach((item, i) => {
+    item.classList.toggle('active', i === 0 || i === 5 || i === 10);
+  });
+  document.querySelectorAll('.fc-body').forEach(body => {
+    const items = body.querySelectorAll('.fc-item');
+    items.forEach((item, i) => item.classList.toggle('active', i === 0));
+  });
+  document.getElementById('search-input').value = '';
+  applyFilters();
+}
+
+function sortCourses(val) {
+  const container = document.getElementById('courses-container');
+  const cards = [...container.querySelectorAll('.course-card')];
+  cards.sort((a, b) => {
+    if(val === 'price-low') return Number(a.dataset.price) - Number(b.dataset.price);
+    if(val === 'free-first') return Number(a.dataset.price) - Number(b.dataset.price);
+    return 0;
+  });
+  cards.forEach(c => container.appendChild(c));
+}
+
+// ── PDF filtering ─────────────────────────────────────────
+function filterPDFs(exam) {
+  document.querySelectorAll('.pdf-card').forEach(card => {
+    card.style.display = (exam === 'all' || card.dataset.exam === exam) ? '' : 'none';
+  });
+}
+
+// ── PDF download handling ─────────────────────────────────
+function downloadPDF(card, access) {
+  if(access === 'free') {
+    // In production: fetch /api/pdf/:id/download — returns secure S3 URL
+    alert('✅ Download starting! In the live website, the PDF will download automatically.');
+  } else {
+    // Check if user has required plan
+    const plans = { pro: 'Pro', elite: 'Elite' };
+    const needed = plans[access] || access;
+    if(confirm(`This PDF requires ${needed} plan (from ₹${access === 'pro' ? '599' : '999'}/mo).\n\nUpgrade now to download all premium PDFs?`)) {
+      window.location.href = 'login.html#register';
+    }
+  }
+}
+
+// Initial count
+updateCount();
+</script>
+</body>
+</html>

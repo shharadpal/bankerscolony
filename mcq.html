@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQ Practice — Bankers Colony</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--blue:#1E40AF;--blue2:#2563EB;--blue3:#DBEAFE;--blue4:#EFF6FF;--gold:#D97706;--gold2:#FEF3C7;--green:#059669;--green2:#D1FAE5;--red:#DC2626;--red2:#FEE2E2;--gray:#6B7280;--gray2:#F3F4F6;--gray3:#E5E7EB;--dark:#111827;--white:#fff;--body:#F9FAFB;}
+body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--body);}
+a{text-decoration:none;color:inherit;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--blue2);color:#fff;}
+.btn-primary:hover{background:var(--blue);}
+.btn-outline{background:transparent;border:1.5px solid var(--gray3);color:var(--dark);}
+.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-free{background:var(--green2);color:var(--green);}
+.badge-paid{background:var(--gold2);color:var(--gold);}
+
+/* HEADER */
+.header{background:#fff;border-bottom:1px solid var(--gray3);height:60px;display:flex;align-items:center;position:sticky;top:0;z-index:200;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:14px;width:100%;}
+.logo-name{font-family:'Merriweather',serif;font-size:17px;font-weight:900;color:var(--blue);}
+.logo-name span{color:var(--gold);}
+.header-nav{display:flex;gap:4px;margin-left:20px;}
+.hn-link{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;color:var(--gray);transition:all .15s;}
+.hn-link:hover,.hn-link.active{background:var(--blue4);color:var(--blue2);}
+.header-right{margin-left:auto;display:flex;gap:8px;}
+
+/* FILTER BAR */
+.filter-bar{background:#fff;border-bottom:1px solid var(--gray3);padding:12px 0;position:sticky;top:60px;z-index:100;}
+.filter-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.filter-chip{padding:6px 14px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray3);background:#fff;color:var(--gray);transition:all .2s;white-space:nowrap;}
+.filter-chip:hover{border-color:var(--blue2);color:var(--blue2);}
+.filter-chip.active{background:var(--blue2);color:#fff;border-color:var(--blue2);}
+.filter-select{padding:7px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-size:12.5px;font-family:'Inter',sans-serif;outline:none;color:var(--dark);background:#fff;cursor:pointer;}
+.filter-select:focus{border-color:var(--blue2);}
+.search-input{flex:1;max-width:250px;padding:7px 14px;border:1.5px solid var(--gray3);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+.search-input:focus{border-color:var(--blue2);}
+.filter-count{margin-left:auto;font-size:12px;color:var(--gray);white-space:nowrap;}
+
+/* MAIN LAYOUT */
+.main-wrap{max-width:1200px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 300px;gap:24px;}
+
+/* MCQ SECTION */
+.mcq-section{margin-bottom:24px;}
+.section-head{background:#fff;border:1px solid var(--gray3);border-radius:12px 12px 0 0;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--blue2);}
+.section-head h3{font-size:15px;font-weight:700;color:var(--dark);}
+
+/* MCQ CARD */
+.mcq-card{background:#fff;border:1px solid var(--gray3);border-top:none;padding:20px 22px;transition:background .1s;position:relative;}
+.mcq-card:last-child{border-radius:0 0 12px 12px;}
+.mcq-card.answered-correct{border-left:4px solid var(--green);}
+.mcq-card.answered-wrong{border-left:4px solid var(--red);}
+.mcq-meta{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.mcq-q{font-size:14.5px;font-weight:600;color:var(--dark);line-height:1.55;margin-bottom:14px;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.option{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border:1.5px solid var(--gray3);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--dark);transition:all .15s;line-height:1.4;}
+.option:hover{border-color:var(--blue2);background:var(--blue4);}
+.option.selected{border-color:var(--blue2);background:var(--blue4);}
+.option.correct{border-color:var(--green);background:var(--green2);color:var(--green);}
+.option.wrong{border-color:var(--red);background:var(--red2);color:var(--red);}
+.opt-key{width:24px;height:24px;border-radius:6px;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--gray);}
+.option.selected .opt-key{background:var(--blue2);color:#fff;border-color:var(--blue2);}
+.option.correct .opt-key{background:var(--green);color:#fff;border-color:var(--green);}
+.option.wrong .opt-key{background:var(--red);color:#fff;border-color:var(--red);}
+.mcq-actions{display:flex;align-items:center;gap:8px;}
+.explanation{background:var(--blue4);border-left:4px solid var(--blue2);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--dark);line-height:1.6;display:none;}
+.explanation.show{display:block;}
+.explanation strong{color:var(--blue2);}
+
+/* LOCK OVERLAY */
+.lock-overlay{position:absolute;inset:0;background:rgba(255,255,255,.88);backdrop-filter:blur(3px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-radius:inherit;}
+.lo-icon{font-size:32px;}
+.lo-title{font-size:14px;font-weight:700;color:var(--dark);}
+.lo-sub{font-size:12.5px;color:var(--gray);}
+
+/* SIDEBAR */
+.sidebar{}
+.sb-card{background:#fff;border:1px solid var(--gray3);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.sc-head{padding:12px 16px;border-bottom:1px solid var(--gray3);display:flex;align-items:center;gap:7px;}
+.sc-head h4{font-size:13px;font-weight:700;color:var(--dark);}
+.sc-body{padding:14px 16px;}
+.progress-stat{background:var(--body);border-radius:8px;padding:10px;text-align:center;margin-bottom:8px;}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ps-val{font-size:20px;font-weight:800;color:var(--dark);}
+.ps-label{font-size:10.5px;color:var(--gray);}
+.acc-bar{height:8px;background:var(--gray3);border-radius:4px;overflow:hidden;margin-top:8px;}
+.acc-fill{height:100%;background:linear-gradient(90deg,var(--blue2),var(--green));border-radius:4px;transition:width .5s ease;}
+.topic-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray3);font-size:13px;cursor:pointer;}
+.topic-item:last-child{border-bottom:none;}
+.topic-item:hover{color:var(--blue2);}
+.topic-count{font-size:11px;color:var(--gray);background:var(--gray2);padding:2px 8px;border-radius:8px;}
+.daily-card{background:linear-gradient(135deg,var(--blue),#1E3A8A);border-radius:12px;padding:18px;color:#fff;margin-bottom:16px;text-align:center;}
+.dc-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.dc-timer{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;margin:8px 0;color:#FCD34D;}
+.dc-sub{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:12px;}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .35s;z-index:600;}
+.toast.show{transform:translateY(0);opacity:1;}
+@media(max-width:900px){.main-wrap{grid-template-columns:1fr;}.sidebar{display:none;}.options{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo-name">Bankers<span>Colony</span></a>
+    <div class="header-nav">
+      <a href="mcq.html" class="hn-link active">Free MCQs</a>
+      <a href="mcq.html?type=mock" class="hn-link">Mock Tests</a>
+      <a href="mcq.html?type=daily" class="hn-link">Daily Quiz</a>
+    </div>
+    <div class="header-right">
+      <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="login.html#register" class="btn btn-primary btn-sm">⭐ Go Premium</a>
+    </div>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="filter-chip active" onclick="setFilter(this,'all')">All</div>
+    <div class="filter-chip" onclick="setFilter(this,'jaiib')">JAIIB</div>
+    <div class="filter-chip" onclick="setFilter(this,'caiib')">CAIIB</div>
+    <div class="filter-chip" onclick="setFilter(this,'banking')">Banking Awareness</div>
+    <div class="filter-chip" onclick="setFilter(this,'quant')">Quant</div>
+    <div class="filter-chip" onclick="setFilter(this,'reasoning')">Reasoning</div>
+    <select class="filter-select">
+      <option>All Levels</option>
+      <option>Easy</option>
+      <option>Medium</option>
+      <option>Hard</option>
+    </select>
+    <input type="text" class="search-input" placeholder="🔍 Search questions…">
+    <span class="filter-count">Showing 6 questions</span>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div>
+
+    <!-- BANKING AWARENESS SECTION -->
+    <div class="mcq-section">
+      <div class="section-head">
+        <h3>🏦 Banking Awareness <span style="font-size:12px;color:var(--gray);font-weight:400;">850 Questions · 300 Free</span></h3>
+        <span class="badge badge-free">FREE</span>
+      </div>
+
+      <!-- Q1 -->
+      <div class="mcq-card" id="q1">
+        <div class="mcq-meta">
+          <span class="badge badge-free">FREE</span>
+          <span style="background:var(--green2);color:var(--green);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">Easy</span>
+          <span style="font-size:12px;color:var(--gray);">#BA-001</span>
+        </div>
+        <div class="mcq-q">What is the current Cash Reserve Ratio (CRR) maintained by Indian commercial banks with the RBI?</div>
+        <div class="options">
+          <div class="option" onclick="selectOpt(this,1,'A','A')"><span class="opt-key">A</span>4.00%</div>
+          <div class="option" onclick="selectOpt(this,1,'B','A')"><span class="opt-key">B</span>4.50%</div>
+          <div class="option" onclick="selectOpt(this,1,'C','A')"><span class="opt-key">C</span>3.50%</div>
+          <div class="option" onclick="selectOpt(this,1,'D','A')"><span class="opt-key">D</span>5.00%</div>
+        </div>
+        <div class="mcq-actions">
+          <button class="btn btn-primary btn-sm" onclick="submitAnswer(1)">Submit</button>
+          <button class="btn btn-outline btn-sm" onclick="bookmarkQ(1)">🔖 Bookmark</button>
+        </div>
+        <div class="explanation" id="exp-q1">
+          <strong>✓ Correct Answer: A — 4.00%</strong><br>
+          The Cash Reserve Ratio (CRR) is the minimum percentage of a bank's total deposits that it must hold as liquid cash with the Reserve Bank of India. As of May 2026, the CRR is <strong>4.00%</strong>. It is a key monetary policy instrument used by RBI to control money supply and liquidity in the banking system.
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="mcq-card" id="q2">
+        <div class="mcq-meta">
+          <span class="badge badge-free">FREE</span>
+          <span style="background:var(--gold2);color:var(--gold);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">Medium</span>
+          <span style="font-size:12px;color:var(--gray);">#BA-002</span>
+        </div>
+        <div class="mcq-q">Under the SARFAESI Act 2002, after issuing a demand notice, how many days must a bank wait before taking possession of secured assets?</div>
+        <div class="options">
+          <div class="option" onclick="selectOpt(this,2,'A','C')"><span class="opt-key">A</span>30 days</div>
+          <div class="option" onclick="selectOpt(this,2,'B','C')"><span class="opt-key">B</span>45 days</div>
+          <div class="option" onclick="selectOpt(this,2,'C','C')"><span class="opt-key">C</span>60 days</div>
+          <div class="option" onclick="selectOpt(this,2,'D','C')"><span class="opt-key">D</span>90 days</div>
+        </div>
+        <div class="mcq-actions">
+          <button class="btn btn-primary btn-sm" onclick="submitAnswer(2)">Submit</button>
+          <button class="btn btn-outline btn-sm" onclick="bookmarkQ(2)">🔖 Bookmark</button>
+        </div>
+        <div class="explanation" id="exp-q2">
+          <strong>✓ Correct Answer: C — 60 days</strong><br>
+          Under Section 13(2) of the SARFAESI Act 2002, the secured creditor must issue a demand notice to the borrower. If the borrower fails to repay within <strong>60 days</strong>, the bank can take possession of the secured asset without court intervention. This is a critical NPA recovery tool for bank employees to know.
+        </div>
+      </div>
+
+      <!-- Q3 — LOCKED -->
+      <div class="mcq-card" id="q3" style="min-height:180px;">
+        <div class="mcq-meta">
+          <span class="badge badge-paid">PREMIUM</span>
+          <span style="background:var(--red2);color:var(--red);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">Hard</span>
+        </div>
+        <div class="mcq-q" style="filter:blur(4px);user-select:none;">What is the provision requirement for Sub-Standard assets under RBI's prudential norms for NPA classification?</div>
+        <div class="lock-overlay">
+          <div class="lo-icon">🔒</div>
+          <div class="lo-title">Premium Question</div>
+          <div class="lo-sub">Upgrade to unlock 5,000+ questions</div>
+          <a href="login.html#register" class="btn btn-primary btn-sm" style="margin-top:6px;">⭐ Unlock Premium</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAIIB SECTION -->
+    <div class="mcq-section">
+      <div class="section-head">
+        <h3>📋 JAIIB — PPB <span style="font-size:12px;color:var(--gray);font-weight:400;">320 Questions · 100 Free</span></h3>
+        <span class="badge badge-free">FREE</span>
+      </div>
+
+      <!-- Q4 -->
+      <div class="mcq-card" id="q4">
+        <div class="mcq-meta">
+          <span class="badge badge-free">FREE</span>
+          <span style="background:var(--green2);color:var(--green);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">Easy</span>
+          <span style="font-size:12px;color:var(--gray);">#PPB-001</span>
+        </div>
+        <div class="mcq-q">Which of the following is NOT a function of the Reserve Bank of India?</div>
+        <div class="options">
+          <div class="option" onclick="selectOpt(this,4,'A','D')"><span class="opt-key">A</span>Issuing currency notes</div>
+          <div class="option" onclick="selectOpt(this,4,'B','D')"><span class="opt-key">B</span>Banker to the Government</div>
+          <div class="option" onclick="selectOpt(this,4,'C','D')"><span class="opt-key">C</span>Lender of Last Resort</div>
+          <div class="option" onclick="selectOpt(this,4,'D','D')"><span class="opt-key">D</span>Accepting deposits from public</div>
+        </div>
+        <div class="mcq-actions">
+          <button class="btn btn-primary btn-sm" onclick="submitAnswer(4)">Submit</button>
+          <button class="btn btn-outline btn-sm" onclick="bookmarkQ(4)">🔖 Bookmark</button>
+        </div>
+        <div class="explanation" id="exp-q4">
+          <strong>✓ Correct Answer: D — Accepting deposits from public</strong><br>
+          RBI does not accept deposits from the general public. It performs functions like: (1) issuing currency notes, (2) acting as banker and debt manager to the government, (3) functioning as lender of last resort, (4) regulating and supervising commercial banks. Accepting public deposits is a function of commercial banks, not RBI.
+        </div>
+      </div>
+
+      <!-- Q5 — Quant -->
+      <div class="mcq-card" id="q5">
+        <div class="mcq-meta">
+          <span class="badge badge-free">FREE</span>
+          <span style="background:var(--gold2);color:var(--gold);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">Medium</span>
+          <span style="font-size:12px;color:var(--gray);">#QA-001</span>
+        </div>
+        <div class="mcq-q">A principal of ₹10,000 is invested at 10% per annum compound interest for 2 years. What is the compound interest earned?</div>
+        <div class="options">
+          <div class="option" onclick="selectOpt(this,5,'A','B')"><span class="opt-key">A</span>₹2,000</div>
+          <div class="option" onclick="selectOpt(this,5,'B','B')"><span class="opt-key">B</span>₹2,100</div>
+          <div class="option" onclick="selectOpt(this,5,'C','B')"><span class="opt-key">C</span>₹1,900</div>
+          <div class="option" onclick="selectOpt(this,5,'D','B')"><span class="opt-key">D</span>₹2,200</div>
+        </div>
+        <div class="mcq-actions">
+          <button class="btn btn-primary btn-sm" onclick="submitAnswer(5)">Submit</button>
+          <button class="btn btn-outline btn-sm" onclick="bookmarkQ(5)">🔖 Bookmark</button>
+        </div>
+        <div class="explanation" id="exp-q5">
+          <strong>✓ Correct Answer: B — ₹2,100</strong><br>
+          CI = P[(1 + r/100)ⁿ − 1]<br>
+          = 10,000 × [(1.10)² − 1]<br>
+          = 10,000 × [1.21 − 1]<br>
+          = 10,000 × 0.21 = <strong>₹2,100</strong><br>
+          <em>Note: Simple Interest for same values = 10,000 × 10% × 2 = ₹2,000. CI is always more than SI.</em>
+        </div>
+      </div>
+
+      <!-- Q6 — LOCKED -->
+      <div class="mcq-card" id="q6" style="min-height:160px;">
+        <div class="mcq-meta">
+          <span class="badge badge-paid">PREMIUM</span>
+          <span style="background:var(--red2);color:var(--red);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">Hard</span>
+        </div>
+        <div class="mcq-q" style="filter:blur(4px);user-select:none;">In the context of Priority Sector Lending, what is the prescribed target for loans to Weaker Sections as a percentage of Adjusted Net Bank Credit?</div>
+        <div class="lock-overlay">
+          <div class="lo-icon">🔒</div>
+          <div class="lo-title">Premium Question</div>
+          <div class="lo-sub">Upgrade to Pro for unlimited access</div>
+          <a href="login.html#register" class="btn btn-primary btn-sm" style="margin-top:6px;">⭐ Get Pro — ₹599/mo</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="daily-card">
+      <div class="dc-title">⚡ Daily Quiz</div>
+      <div class="dc-timer" id="daily-timer">07:32</div>
+      <div class="dc-sub">New quiz in 7 hours 32 mins</div>
+      <a href="mcq.html?type=daily" class="btn" style="background:#fff;color:var(--blue);width:100%;justify-content:center;font-size:12px;">Start Today's Quiz →</a>
+    </div>
+
+    <div class="sb-card">
+      <div class="sc-head"><span>📊</span><h4>My Session</h4></div>
+      <div class="sc-body">
+        <div class="ps-grid" style="margin-bottom:10px;">
+          <div class="progress-stat"><div class="ps-val" id="stat-attempted">0</div><div class="ps-label">Attempted</div></div>
+          <div class="progress-stat"><div class="ps-val" id="stat-correct" style="color:var(--green);">0</div><div class="ps-label">Correct</div></div>
+          <div class="progress-stat"><div class="ps-val" id="stat-wrong" style="color:var(--red);">0</div><div class="ps-label">Wrong</div></div>
+          <div class="progress-stat"><div class="ps-val" id="stat-acc">0%</div><div class="ps-label">Accuracy</div></div>
+        </div>
+        <div class="acc-bar"><div class="acc-fill" id="acc-bar" style="width:0%;"></div></div>
+        <div style="text-align:center;font-size:11px;color:var(--gray);margin-top:6px;">Session Accuracy</div>
+      </div>
+    </div>
+
+    <div class="sb-card">
+      <div class="sc-head"><span>📚</span><h4>Browse by Topic</h4></div>
+      <div class="sc-body" style="padding:8px 14px;">
+        <div class="topic-item"><span>🏦 Banking Awareness</span><span class="topic-count">850</span></div>
+        <div class="topic-item"><span>📋 JAIIB — PPB</span><span class="topic-count">320</span></div>
+        <div class="topic-item"><span>🔢 Quantitative Aptitude</span><span class="topic-count">600</span></div>
+        <div class="topic-item"><span>🧠 Reasoning Ability</span><span class="topic-count">450</span></div>
+        <div class="topic-item"><span>📝 English Language</span><span class="topic-count">300</span></div>
+        <div class="topic-item" style="border-bottom:none;"><span>🏅 CAIIB — ABM</span><span class="topic-count">240</span></div>
+      </div>
+    </div>
+
+    <div style="background:var(--body);border:2px dashed var(--gray3);border-radius:12px;height:220px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gray);">📢 Advertisement<br>300×250</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toast-icon">✅</span><span id="toast-msg">Correct!</span></div>
+
+<script>
+let attempted = 0, correct = 0, wrong = 0;
+const selected = {}, answered = {};
+
+function selectOpt(el, qid, chosen, correctAns) {
+  if(answered[qid]) return;
+  el.closest('.options').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selected[qid] = {chosen, correctAns};
+}
+
+function submitAnswer(qid) {
+  if(answered[qid]) return;
+  if(!selected[qid]) { showToast('⚠️','Please select an answer first!'); return; }
+  answered[qid] = true;
+  const {chosen, correctAns} = selected[qid];
+  const isCorrect = chosen === correctAns;
+  if(isCorrect) correct++; else wrong++;
+  attempted++;
+
+  const card = document.getElementById('q'+qid);
+  card.querySelectorAll('.option').forEach(o => {
+    const k = o.querySelector('.opt-key').textContent.trim();
+    if(k === correctAns) o.classList.add('correct');
+    else if(k === chosen && !isCorrect) o.classList.add('wrong');
+    o.onclick = null; o.style.cursor = 'default';
+  });
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  document.getElementById('exp-q'+qid)?.classList.add('show');
+  card.querySelectorAll('.btn-primary').forEach(b => { b.disabled=true; b.style.opacity='.5'; });
+
+  updateStats();
+  showToast(isCorrect ? '✅' : '❌', isCorrect ? 'Correct! Well done.' : `Wrong! Answer: ${correctAns}`);
+}
+
+function bookmarkQ(id) { showToast('🔖','Question bookmarked!'); }
+
+function updateStats() {
+  document.getElementById('stat-attempted').textContent = attempted;
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-wrong').textContent = wrong;
+  const acc = attempted ? Math.round(correct/attempted*100) : 0;
+  document.getElementById('stat-acc').textContent = acc + '%';
+  document.getElementById('acc-bar').style.width = acc + '%';
+}
+
+let toastTimer;
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.background = icon==='✅' ? '#065F46' : icon==='❌' ? '#7F1D1D' : '#1F2937';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function setFilter(btn, val) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Daily timer
+function updateTimer() {
+  const now = new Date();
+  const midnight = new Date(now); midnight.setHours(24,0,0,0);
+  const diff = Math.floor((midnight-now)/1000);
+  const h = Math.floor(diff/3600).toString().padStart(2,'0');
+  const m = Math.floor((diff%3600)/60).toString().padStart(2,'0');
+  document.getElementById('daily-timer').textContent = h+':'+m;
+}
+updateTimer(); setInterval(updateTimer, 60000);
+</script>
+</body>
+</html>
