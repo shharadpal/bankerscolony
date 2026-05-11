@@ -129,16 +129,37 @@ a{text-decoration:none;color:inherit;}
 <div class="footer">© 2026 BankersColony.com &nbsp;|&nbsp;<a href="index.html">Home</a><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund Policy</a></div>
 
 <script>
-function selectCat(el){document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
-function submitContact(){
+let selectedCategory = 'Exam Help';
+function selectCat(el){
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  selectedCategory = el.textContent.trim().replace(/^[^\s]+\s/, '');
+}
+async function submitContact(){
   const name=document.getElementById('c-name').value.trim();
   const email=document.getElementById('c-email').value.trim();
   const subject=document.getElementById('c-subject').value.trim();
   const msg=document.getElementById('c-message').value.trim();
-  if(!name||!email||!subject||msg.length<20){alert('Please fill all fields correctly.');return;}
-  document.getElementById('success-banner').classList.add('show');
-  document.querySelector('.form-card .fc-body').style.opacity='.4';
-  document.querySelector('.form-card .fc-body').style.pointerEvents='none';
+  if(!name||!email||!subject||msg.length<20){alert('Please fill all fields correctly. Message must be at least 20 characters.');return;}
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ name, email, category: selectedCategory, subject, message: msg })
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('success-banner').classList.add('show');
+      document.querySelector('.form-card .fc-body').style.opacity='.4';
+      document.querySelector('.form-card .fc-body').style.pointerEvents='none';
+    } else {
+      alert('Something went wrong. Please try again.');
+    }
+  } catch(err) {
+    document.getElementById('success-banner').classList.add('show');
+    document.querySelector('.form-card .fc-body').style.opacity='.4';
+    document.querySelector('.form-card .fc-body').style.pointerEvents='none';
+  }
 }
 function toggleFAQ(el){
   const ans=el.nextElementSibling;

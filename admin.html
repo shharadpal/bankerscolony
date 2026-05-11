@@ -479,8 +479,35 @@ Bank Promotion Exam — New Batch Starting</textarea></div>
   </div>
 </div>
 
+<script src="https://unpkg.com/@netlify/identity@0"></script>
 <script>
 const titles = {dashboard:'📊 Dashboard',courses:'🎓 Courses & Exams',mcq:'📝 MCQ Manager',pdf:'📄 PDF Notes',mock:'🎯 Mock Tests',news:'📰 News & Blog',users:'👥 Users',payments:'💰 Payments',contacts:'📬 Messages',homepage:'🏠 Homepage Editor',packages:'📦 Packages & Pricing',ads:'📢 Advertisements',settings:'⚙️ Site Settings'};
+
+async function checkAdminAuth() {
+  try {
+    const user = await NetlifyIdentity.getUser();
+    if (!user) { window.location.href = 'login.html'; return; }
+    const roles = (user.app_metadata || {}).roles || [];
+    if (!roles.includes('admin')) {
+      alert('Access denied. Admin role required.');
+      window.location.href = 'index.html';
+    }
+  } catch(e) {
+    window.location.href = 'login.html';
+  }
+}
+
+async function loadAdminStats() {
+  try {
+    const res = await fetch('/api/admin/stats');
+    if (res.ok) {
+      const data = await res.json();
+      const statVals = document.querySelectorAll('#panel-dashboard .stat-val');
+      if (statVals[2]) statVals[2].textContent = data.mcqs.published.toLocaleString();
+      if (statVals[3]) statVals[3].textContent = data.contacts.unread;
+    }
+  } catch(e) {}
+}
 
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -508,17 +535,56 @@ function previewBulk() {
   const text = document.querySelector('textarea.bulk-paste').value;
   const blocks = text.split(/\n\s*\n/).filter(b => b.trim() && b.includes('Q:'));
   document.getElementById('bulk-count').textContent = blocks.length + ' MCQs detected';
-  if(blocks.length) alert(`✅ ${blocks.length} MCQ(s) detected and ready to publish. Click "Publish All" to save.`);
+  if(blocks.length) alert('✅ ' + blocks.length + ' MCQ(s) detected and ready to publish. Click "Publish All" to save.');
   else alert('No valid MCQ blocks found. Check the format.');
 }
 
-function publishBulk() {
+async function publishBulk() {
   const text = document.querySelector('textarea.bulk-paste').value;
   const blocks = text.split(/\n\s*\n/).filter(b => b.trim() && b.includes('Q:'));
   if(!blocks.length) { alert('No MCQs detected. Check format.'); return; }
-  // In production: POST to /api/admin/mcq/bulk
-  alert(`✅ ${blocks.length} MCQ(s) published successfully!`);
+
+  const questions = blocks.map(block => {
+    const lines = block.split('\n');
+    const get = (key) => {
+      const line = lines.find(l => l.trim().startsWith(key + ':'));
+      return line ? line.split(':').slice(1).join(':').trim() : '';
+    };
+    return {
+      course: get('COURSE') || 'Banking Awareness',
+      difficulty: get('LEVEL') || 'Medium',
+      access: (get('ACCESS') || 'Free').toLowerCase(),
+      question: get('Q'),
+      optionA: get('A'),
+      optionB: get('B'),
+      optionC: get('C'),
+      optionD: get('D'),
+      correctAnswer: get('ANS'),
+      explanation: get('EXP') || null,
+    };
+  }).filter(q => q.question && q.optionA && q.correctAnswer);
+
+  try {
+    const res = await fetch('/api/admin/mcq?bulk=true', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ questions })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert('✅ ' + data.count + ' MCQ(s) published successfully!');
+      document.querySelector('textarea.bulk-paste').value = '';
+      document.getElementById('bulk-count').textContent = '0 MCQs detected';
+    } else {
+      alert('Error: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    alert('Error publishing MCQs. Please try again.');
+  }
 }
+
+checkAdminAuth();
+loadAdminStats();
 </script>
 </body>
 </html>
