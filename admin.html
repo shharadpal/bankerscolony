@@ -478,47 +478,235 @@ Bank Promotion Exam — New Batch Starting</textarea></div>
 
   </div>
 </div>
-
+<script src="config.js"></script>
 <script>
-const titles = {dashboard:'📊 Dashboard',courses:'🎓 Courses & Exams',mcq:'📝 MCQ Manager',pdf:'📄 PDF Notes',mock:'🎯 Mock Tests',news:'📰 News & Blog',users:'👥 Users',payments:'💰 Payments',contacts:'📬 Messages',homepage:'🏠 Homepage Editor',packages:'📦 Packages & Pricing',ads:'📢 Advertisements',settings:'⚙️ Site Settings'};
+requireAdmin();
 
-function showPanel(id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  document.getElementById('topbar-title').textContent = titles[id] || id;
-  document.querySelectorAll('.sb-item').forEach(i => {
-    if(i.getAttribute('onclick')?.includes("'"+id+"'")) i.classList.add('active');
-  });
+const titles={dashboard:'📊 Dashboard',courses:'🎓 Courses & Exams',mcq:'📝 MCQ Manager',pdf:'📄 PDF Notes',mock:'🎯 Mock Tests',news:'📰 News & Blog',users:'👥 Users',payments:'💰 Payments',contacts:'📬 Messages',homepage:'🏠 Homepage Editor',packages:'📦 Packages & Pricing',ads:'📢 Advertisements',settings:'⚙️ Site Settings'};
+
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.getElementById('topbar-title').textContent=titles[id]||id;
+  document.querySelectorAll('.sb-item').forEach(i=>{ if(i.getAttribute('onclick')?.includes("'"+id+"'")) i.classList.add('active'); });
+  const loaders={dashboard:loadStats,users:loadUsers,payments:loadPayments,contacts:loadContacts,mcq:loadMCQList,courses:loadCourses,settings:loadSettings,homepage:loadHomepageSettings};
+  if(loaders[id]) loaders[id]();
 }
 
-function switchTab(btn, tabId) {
-  btn.closest('.tabs').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+function switchTab(btn,tabId){
+  btn.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
 }
+function switchPanelTab(tab){ const b=document.getElementById('tab-bulk-btn'); if(b) b.click(); }
 
-function switchPanelTab(tab) {
-  const btn = document.getElementById('tab-bulk-btn');
-  if(btn) { btn.click(); }
+// ── STATS ─────────────────────────────────────────────────────────
+async function loadStats(){
+  try{
+    const data=await api('/api/admin/stats'); const s=data.stats;
+    const vals=document.querySelectorAll('#panel-dashboard .stat-val');
+    if(vals[0]) vals[0].textContent=s.users.toLocaleString('en-IN');
+    if(vals[1]) vals[1].textContent='₹'+s.revenue.toLocaleString('en-IN');
+    if(vals[2]) vals[2].textContent=s.mcqs.toLocaleString('en-IN');
+    if(vals[3]) vals[3].textContent=s.newContacts;
+  }catch(e){console.error('Stats:',e.message);}
 }
 
-function previewBulk() {
-  const text = document.querySelector('textarea.bulk-paste').value;
-  const blocks = text.split(/\n\s*\n/).filter(b => b.trim() && b.includes('Q:'));
-  document.getElementById('bulk-count').textContent = blocks.length + ' MCQs detected';
-  if(blocks.length) alert(`✅ ${blocks.length} MCQ(s) detected and ready to publish. Click "Publish All" to save.`);
-  else alert('No valid MCQ blocks found. Check the format.');
+// ── USERS ─────────────────────────────────────────────────────────
+async function loadUsers(q=''){
+  try{
+    const data=await api('/api/admin/users?limit=50'+(q?'&q='+q:''));
+    const tbody=document.querySelector('#panel-users .data-table');
+    if(!tbody) return;
+    const pc={free:'s-free',basic:'s-paid',pro:'s-paid',elite:'s-paid'};
+    tbody.innerHTML='<tr><th>Name</th><th>Email</th><th>Exam</th><th>Plan</th><th>Joined</th><th>Actions</th></tr>'+
+      data.users.map(u=>`<tr><td><strong>${u.name}</strong></td><td>${u.email}</td><td>${u.examCategory||'—'}</td>
+        <td><span class="status ${pc[u.plan]||'s-free'}">${u.plan}</span></td>
+        <td>${new Date(u.createdAt).toLocaleDateString('en-IN')}</td>
+        <td class="action-btns"><button class="btn btn-primary btn-sm" onclick="upgradePlan('${u._id}','${u.name}')">Plan</button></td></tr>`).join('');
+  }catch(e){console.error('Users:',e.message);}
+}
+async function upgradePlan(id,name){
+  const plan=prompt('Change plan for '+name+':
+Options: free, basic, pro, elite');
+  if(!plan) return;
+  try{ await api('/api/admin/users/'+id,'PUT',{plan}); alert('✅ Plan updated!'); loadUsers(); }
+  catch(e){ alert('Error: '+e.message); }
 }
 
-function publishBulk() {
-  const text = document.querySelector('textarea.bulk-paste').value;
-  const blocks = text.split(/\n\s*\n/).filter(b => b.trim() && b.includes('Q:'));
-  if(!blocks.length) { alert('No MCQs detected. Check format.'); return; }
-  // In production: POST to /api/admin/mcq/bulk
-  alert(`✅ ${blocks.length} MCQ(s) published successfully!`);
+// ── PAYMENTS ──────────────────────────────────────────────────────
+async function loadPayments(){
+  try{
+    const data=await api('/api/admin/payments?limit=50');
+    const tbody=document.querySelector('#panel-payments .data-table');
+    if(!tbody) return;
+    tbody.innerHTML='<tr><th>User</th><th>Plan</th><th>Amount</th><th>Payment ID</th><th>Date</th><th>Status</th></tr>'+
+      data.payments.map(p=>`<tr><td>${p.userId?.name||'—'}</td><td>${p.plan}</td><td>₹${p.amount}</td>
+        <td style="font-size:11px;">${p.razorpayPaymentId||'—'}</td>
+        <td>${new Date(p.createdAt).toLocaleDateString('en-IN')}</td>
+        <td><span class="status s-active">✓ Paid</span></td></tr>`).join('');
+  }catch(e){console.error('Payments:',e.message);}
 }
+
+// ── CONTACTS ──────────────────────────────────────────────────────
+async function loadContacts(){
+  try{
+    const data=await api('/api/admin/contacts?limit=30');
+    const tbody=document.querySelector('#panel-contacts .data-table');
+    if(!tbody) return;
+    tbody.innerHTML='<tr><th>From</th><th>Subject</th><th>Category</th><th>Date</th><th>Status</th><th>Actions</th></tr>'+
+      data.contacts.map(c=>`<tr>
+        <td><strong>${c.name}</strong><br><small>${c.email}</small></td><td>${c.subject}</td><td>${c.category}</td>
+        <td>${new Date(c.createdAt).toLocaleDateString('en-IN')}</td>
+        <td><span class="status" style="background:${c.status==='new'?'var(--red2)':'var(--green2)'};color:${c.status==='new'?'var(--red)':'var(--green)'};">${c.status}</span></td>
+        <td class="action-btns"><button class="btn btn-primary btn-sm" onclick="markRead('${c._id}','${c.name}')">View</button></td></tr>`).join('');
+  }catch(e){console.error('Contacts:',e.message);}
+}
+async function markRead(id,name){ if(confirm('Mark message from '+name+' as read?')){ await api('/api/admin/contacts/'+id,'PUT',{status:'read'}); loadContacts(); } }
+
+// ── MCQ LIST ──────────────────────────────────────────────────────
+async function loadMCQList(q=''){
+  try{
+    const data=await api('/api/admin/mcq?limit=50'+(q?'&q='+q:''));
+    const tbody=document.querySelector('#tab-list .data-table');
+    if(!tbody) return;
+    tbody.innerHTML='<tr><th>#</th><th>Question</th><th>Course</th><th>Access</th><th>Status</th><th>Actions</th></tr>'+
+      data.mcqs.map((m,i)=>`<tr><td>${String(i+1).padStart(3,'0')}</td><td>${m.question.slice(0,55)}…</td>
+        <td>${m.course}</td><td><span class="status ${m.access==='free'?'s-free':'s-paid'}">${m.access}</span></td>
+        <td><span class="status ${m.status==='published'?'s-active':'s-draft'}">${m.status}</span></td>
+        <td class="action-btns"><button class="btn btn-red btn-sm" onclick="deleteMCQ('${m._id}')">Del</button></td></tr>`).join('');
+  }catch(e){console.error('MCQ list:',e.message);}
+}
+async function deleteMCQ(id){ if(!confirm('Delete this MCQ?')) return; try{ await api('/api/admin/mcq/'+id,'DELETE'); loadMCQList(); }catch(e){alert('Error: '+e.message);} }
+
+async function publishSingleMCQ(){
+  const fields=document.querySelectorAll('#tab-single select, #tab-single input, #tab-single textarea');
+  const [course,diff,access,question,A,B,C,D,answer,status,explanation]=[...fields].map(f=>f.value.trim());
+  if(!course||!question||!A||!B||!C||!D||!answer){ alert('Please fill all required fields.'); return; }
+  try{
+    await api('/api/admin/mcq','POST',{course,difficulty:diff,access:access.toLowerCase(),question,options:{A,B,C,D},answer,status:status.toLowerCase(),explanation});
+    alert('✅ MCQ published!');
+    [...fields].forEach(f=>{ if(f.tagName!=='SELECT') f.value=''; });
+    loadMCQList();
+  }catch(e){alert('Error: '+e.message);}
+}
+
+function previewBulk(){
+  const text=document.querySelector('textarea.bulk-paste')?.value||'';
+  const blocks=text.split(/
+\s*
+/).filter(b=>b.trim()&&b.includes('Q:'));
+  document.getElementById('bulk-count').textContent=blocks.length+' MCQs detected';
+  alert(blocks.length?'✅ '+blocks.length+' MCQ(s) ready. Click Publish All.':'No valid MCQ blocks found. Check format.');
+}
+async function publishBulk(){
+  const text=document.querySelector('textarea.bulk-paste')?.value||'';
+  if(!text.trim()){ alert('Nothing to upload.'); return; }
+  try{
+    const data=await api('/api/admin/mcq/bulk','POST',{text});
+    alert('✅ '+data.inserted+' MCQs published!'+(data.errors?.length?' ⚠️ '+data.errors.length+' errors.':''));
+    document.querySelector('textarea.bulk-paste').value='';
+    document.getElementById('bulk-count').textContent='0 MCQs detected';
+    loadMCQList();
+  }catch(e){alert('Error: '+e.message);}
+}
+
+// ── COURSES ───────────────────────────────────────────────────────
+async function loadCourses(){
+  try{
+    const data=await api('/api/admin/courses');
+    const tbody=document.querySelector('#panel-courses .data-table');
+    if(!tbody) return;
+    tbody.innerHTML='<tr><th>Course</th><th>Type</th><th>Access</th><th>Actions</th></tr>'+
+      data.courses.map(c=>`<tr><td><strong>${c.icon||'📋'} ${c.name}</strong></td><td>${c.category||'—'}</td>
+        <td><span class="status ${c.access==='free'?'s-free':'s-paid'}">${c.access}</span></td>
+        <td class="action-btns"><button class="btn btn-red btn-sm" onclick="deleteCourse('${c._id}')">Del</button></td></tr>`).join('');
+  }catch(e){console.error('Courses:',e.message);}
+}
+async function publishCourse(){
+  const inputs=document.querySelectorAll('#panel-courses .form-card input, #panel-courses .form-card select');
+  const [name,cat,exam,accessRaw,price,icon,desc,showOn,status]=[...inputs].map(f=>f.value.trim());
+  if(!name){ alert('Course name is required.'); return; }
+  const access=accessRaw.split(' ')[0].toLowerCase().replace('paid—','').replace('paid-','').trim()||'pro';
+  try{
+    await api('/api/admin/courses','POST',{name,category:cat,examType:exam.toLowerCase(),access,price:Number(price)||0,icon:icon||'📋',description:desc,showOnHomepage:showOn==='Yes',status:status.toLowerCase()});
+    alert('✅ Course published!'); loadCourses();
+  }catch(e){alert('Error: '+e.message);}
+}
+async function deleteCourse(id){ if(!confirm('Delete this course?')) return; try{ await api('/api/admin/courses/'+id,'DELETE'); loadCourses(); }catch(e){alert('Error: '+e.message);} }
+
+// ── SETTINGS ─────────────────────────────────────────────────────
+async function loadSettings(){
+  try{
+    const data=await api('/api/admin/settings'); const s=data.settings;
+    const inputs=document.querySelectorAll('#panel-settings input');
+    if(inputs[0]) inputs[0].value=s.site_name||'Bankers Colony';
+    if(inputs[1]) inputs[1].value=s.tagline||'Banking Exam Preparation';
+    if(inputs[2]) inputs[2].value=s.contact_email||'';
+  }catch{}
+}
+async function saveSettings(){
+  const inputs=document.querySelectorAll('#panel-settings input');
+  try{ await api('/api/admin/settings','PUT',{site_name:inputs[0]?.value,tagline:inputs[1]?.value,contact_email:inputs[2]?.value}); alert('✅ Settings saved!'); }
+  catch(e){alert('Error: '+e.message);}
+}
+
+async function loadHomepageSettings(){
+  try{
+    const data=await api('/api/admin/settings'); const s=data.settings;
+    const inputs=document.querySelectorAll('#panel-homepage input, #panel-homepage textarea');
+    if(inputs[0]) inputs[0].value=s.hero_title||'';
+    if(inputs[1]) inputs[1].value=s.hero_sub||'';
+    if(inputs[2]&&Array.isArray(s.ticker_items)) inputs[2].value=s.ticker_items.join('
+');
+    const sl=s.social_links||{};
+    if(inputs[3]) inputs[3].value=sl.telegram||'';
+    if(inputs[4]) inputs[4].value=sl.whatsapp||'';
+    if(inputs[5]) inputs[5].value=sl.youtube||'';
+    if(inputs[6]) inputs[6].value=sl.instagram||'';
+    if(inputs[7]) inputs[7].value=sl.facebook||'';
+  }catch{}
+}
+async function saveHomepageSettings(){
+  const inputs=document.querySelectorAll('#panel-homepage input, #panel-homepage textarea');
+  try{
+    await api('/api/admin/settings','PUT',{hero_title:inputs[0]?.value,hero_sub:inputs[1]?.value,
+      ticker_items:inputs[2]?.value.split('
+').filter(Boolean),
+      social_links:{telegram:inputs[3]?.value,whatsapp:inputs[4]?.value,youtube:inputs[5]?.value,instagram:inputs[6]?.value,facebook:inputs[7]?.value}});
+    alert('✅ Homepage settings saved!');
+  }catch(e){alert('Error: '+e.message);}
+}
+
+async function generateAwareness(){
+  const btn=event?.currentTarget;
+  if(btn){ btn.textContent='Generating…'; btn.disabled=true; }
+  try{ const d=await api('/api/admin/generate-awareness','POST'); alert('✅ Generated '+d.questions?.length+' awareness questions!'); }
+  catch(e){ alert('Error: '+e.message); }
+  finally{ if(btn){ btn.textContent='🤖 Generate Today's Awareness'; btn.disabled=false; } }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const user=getUser();
+  if(user){ const el=document.querySelector('.topbar-right span'); if(el) el.textContent=user.name; }
+
+  const sp=document.querySelector('#tab-single .form-actions .btn-primary');
+  if(sp) sp.onclick=publishSingleMCQ;
+  const cp=document.querySelector('#panel-courses .form-card .btn-primary');
+  if(cp) cp.onclick=publishCourse;
+  const ss=document.querySelector('#panel-settings .form-actions .btn-primary');
+  if(ss) ss.onclick=saveSettings;
+  const hs=document.querySelector('#panel-homepage .form-actions .btn-primary');
+  if(hs) hs.onclick=saveHomepageSettings;
+
+  // Wire logout
+  document.querySelectorAll('a[href="login.html"]').forEach(a=>{
+    if(a.textContent.trim()==='Logout'){ a.href='#'; a.onclick=e=>{e.preventDefault();logout();}; }
+  });
+  loadStats();
+});
 </script>
 </body>
 </html>
