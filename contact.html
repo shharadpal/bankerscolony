@@ -127,24 +127,41 @@ a{text-decoration:none;color:inherit;}
 </div></div></div>
 
 <div class="footer">© 2026 BankersColony.com &nbsp;|&nbsp;<a href="index.html">Home</a><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund Policy</a></div>
-
+<script src="config.js"></script>
 <script>
-function selectCat(el){document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');}
-function submitContact(){
-  const name=document.getElementById('c-name').value.trim();
-  const email=document.getElementById('c-email').value.trim();
-  const subject=document.getElementById('c-subject').value.trim();
-  const msg=document.getElementById('c-message').value.trim();
-  if(!name||!email||!subject||msg.length<20){alert('Please fill all fields correctly.');return;}
-  document.getElementById('success-banner').classList.add('show');
-  document.querySelector('.form-card .fc-body').style.opacity='.4';
-  document.querySelector('.form-card .fc-body').style.pointerEvents='none';
+let selectedCategory = 'Exam Help';
+
+function selectCat(el){
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  selectedCategory = el.textContent.replace(/[^a-zA-Z \/]/g,'').trim();
 }
+
+async function submitContact(){
+  const name    = document.getElementById('c-name').value.trim();
+  const email   = document.getElementById('c-email').value.trim();
+  const subject = document.getElementById('c-subject').value.trim();
+  const msg     = document.getElementById('c-message').value.trim();
+  const btn     = document.querySelector('.btn-primary');
+  if(!name||!email||!subject||msg.length<20){
+    alert('Please fill all fields. Message must be at least 20 characters.'); return;
+  }
+  try{
+    btn.textContent='Sending…'; btn.disabled=true;
+    await api('/api/contact','POST',{name,email,subject,message:msg,category:selectedCategory});
+    document.getElementById('success-banner').classList.add('show');
+    document.querySelector('.form-card .fc-body').style.opacity='.4';
+    document.querySelector('.form-card .fc-body').style.pointerEvents='none';
+  } catch(err){
+    alert('Error: '+(err.message||'Failed to send. Please try again.'));
+    btn.textContent='📬 Send Message →'; btn.disabled=false;
+  }
+}
+
 function toggleFAQ(el){
-  const ans=el.nextElementSibling;
-  const open=ans.classList.contains('show');
+  const ans=el.nextElementSibling; const open=ans.classList.contains('show');
   document.querySelectorAll('.faq-a').forEach(a=>a.classList.remove('show'));
-  if(!open)ans.classList.add('show');
+  if(!open) ans.classList.add('show');
 }
 </script>
 </body>
