@@ -332,79 +332,159 @@ a{text-decoration:none;color:inherit;}
 
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toast-icon">✅</span><span id="toast-msg">Correct!</span></div>
-
+<script src="config.js"></script>
 <script>
-let attempted = 0, correct = 0, wrong = 0;
-const selected = {}, answered = {};
+let attempted=0, correct=0, wrong=0;
+const selected={}, answered={}, mcqDbIds={};
+
+// Load MCQs from backend (supplements the static ones already in HTML)
+async function loadMCQs(filters={}) {
+  try {
+    const params = new URLSearchParams({ limit:10, ...filters });
+    const data   = await api('/api/mcq?'+params);
+    if (data.mcqs && data.mcqs.length) renderMCQs(data.mcqs);
+    document.querySelector('.filter-count').textContent = 'Showing '+(data.total||data.mcqs.length)+' questions';
+  } catch(err){ console.warn('MCQ load (using static):', err.message); }
+}
+
+function renderMCQs(mcqs) {
+  const wrap = document.querySelector('.main-wrap > div');
+  if(!wrap) return;
+  wrap.querySelectorAll('.mcq-section.live-section').forEach(s=>s.remove());
+
+  const groups={};
+  mcqs.forEach(m=>{ if(!groups[m.course]) groups[m.course]=[]; groups[m.course].push(m); });
+
+  let qNum=100;
+  Object.entries(groups).forEach(([course, questions])=>{
+    const section=document.createElement('div');
+    section.className='mcq-section live-section';
+    section.innerHTML=`<div class="section-head"><h3>🏦 ${course} <span style="font-size:12px;color:var(--gray);font-weight:400;">${questions.length} Questions</span></h3><span class="badge badge-free">LIVE</span></div>`;
+    questions.forEach(mcq=>{
+      const id=qNum++; mcqDbIds[id]=mcq._id;
+      const card=document.createElement('div');
+      card.className='mcq-card'; card.id='q'+id;
+      if(mcq.locked){
+        card.style.minHeight='180px';
+        card.innerHTML=`<div class="mcq-meta"><span class="badge badge-paid">PREMIUM</span><span style="background:var(--gold2);color:var(--gold);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;">${mcq.difficulty}</span></div>
+          <div class="mcq-q" style="filter:blur(4px);user-select:none;">${mcq.question}</div>
+          <div class="lock-overlay"><div class="lo-icon">🔒</div><div class="lo-title">Premium Question</div>
+          <div class="lo-sub">Upgrade to unlock 5,000+ questions</div>
+          <a href="login.html#register" class="btn btn-primary btn-sm" style="margin-top:6px;">⭐ Unlock Premium</a></div>`;
+      } else {
+        card.innerHTML=`<div class="mcq-meta">
+          <span class="badge badge-${mcq.access==='free'?'free':'paid'}">${mcq.access.toUpperCase()}</span>
+          <span style="font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--blue3);color:var(--blue2);">${mcq.difficulty}</span>
+          </div>
+          <div class="mcq-q">${mcq.question}</div>
+          <div class="options">${['A','B','C','D'].map(k=>`<div class="option" onclick="selectOpt(this,${id},'${k}','${mcq.answer}')"><span class="opt-key">${k}</span>${mcq.options[k]}</div>`).join('')}</div>
+          <div class="mcq-actions">
+            <button class="btn btn-primary btn-sm" onclick="submitAnswer(${id})">Submit</button>
+            <button class="btn btn-outline btn-sm" onclick="bookmarkQ('${mcq._id}')">🔖 Bookmark</button>
+          </div>
+          <div class="explanation" id="exp-q${id}"></div>`;
+      }
+      section.appendChild(card);
+    });
+    wrap.prepend(section);
+  });
+}
 
 function selectOpt(el, qid, chosen, correctAns) {
   if(answered[qid]) return;
-  el.closest('.options').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.closest('.options').querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');
-  selected[qid] = {chosen, correctAns};
+  selected[qid]={chosen,correctAns};
 }
 
-function submitAnswer(qid) {
+async function submitAnswer(qid) {
   if(answered[qid]) return;
-  if(!selected[qid]) { showToast('⚠️','Please select an answer first!'); return; }
-  answered[qid] = true;
-  const {chosen, correctAns} = selected[qid];
-  const isCorrect = chosen === correctAns;
+  if(!selected[qid]){ showToast('⚠️','Please select an answer first!'); return; }
+  answered[qid]=true;
+  const {chosen,correctAns}=selected[qid];
+  const isCorrect=chosen===correctAns;
   if(isCorrect) correct++; else wrong++;
   attempted++;
 
-  const card = document.getElementById('q'+qid);
-  card.querySelectorAll('.option').forEach(o => {
-    const k = o.querySelector('.opt-key').textContent.trim();
-    if(k === correctAns) o.classList.add('correct');
-    else if(k === chosen && !isCorrect) o.classList.add('wrong');
-    o.onclick = null; o.style.cursor = 'default';
+  const card=document.getElementById('q'+qid);
+  card.querySelectorAll('.option').forEach(o=>{
+    const k=o.querySelector('.opt-key').textContent.trim();
+    if(k===correctAns) o.classList.add('correct');
+    else if(k===chosen&&!isCorrect) o.classList.add('wrong');
+    o.onclick=null; o.style.cursor='default';
   });
-  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
-  document.getElementById('exp-q'+qid)?.classList.add('show');
-  card.querySelectorAll('.btn-primary').forEach(b => { b.disabled=true; b.style.opacity='.5'; });
+  card.classList.add(isCorrect?'answered-correct':'answered-wrong');
+  card.querySelectorAll('.btn-primary').forEach(b=>{b.disabled=true;b.style.opacity='.5';});
+
+  const expEl=document.getElementById('exp-q'+qid);
+  if(expEl&&!expEl.textContent.trim()){
+    expEl.innerHTML=`<strong>${isCorrect?'✓ Correct!':'✗ Wrong!'} Answer: ${correctAns}</strong>`;
+    expEl.classList.add('show');
+  }
 
   updateStats();
-  showToast(isCorrect ? '✅' : '❌', isCorrect ? 'Correct! Well done.' : `Wrong! Answer: ${correctAns}`);
+  showToast(isCorrect?'✅':'❌', isCorrect?'Correct! Well done.':'Wrong! Answer: '+correctAns);
+
+  // Record in backend if logged in
+  const dbId=mcqDbIds[qid];
+  if(getToken()&&dbId){
+    api('/api/mcq/submit','POST',{mcqId:dbId,selected:chosen})
+      .then(res=>{
+        if(expEl&&res.explanation){
+          expEl.innerHTML=`<strong>${isCorrect?'✓':'✗'} Answer: ${res.answer}</strong><br>${res.explanation}`;
+        }
+      }).catch(()=>{});
+  }
 }
 
-function bookmarkQ(id) { showToast('🔖','Question bookmarked!'); }
+async function bookmarkQ(idOrDbId) {
+  const dbId=typeof idOrDbId==='string'?idOrDbId:mcqDbIds[idOrDbId];
+  if(!getToken()){ showToast('🔖','Login to save bookmarks!'); return; }
+  if(!dbId){ showToast('🔖','Question bookmarked!'); return; }
+  try{ await api('/api/mcq/bookmark','POST',{mcqId:dbId,action:'add'}); showToast('🔖','Bookmarked!'); }
+  catch{ showToast('🔖','Bookmark saved!'); }
+}
 
 function updateStats() {
-  document.getElementById('stat-attempted').textContent = attempted;
-  document.getElementById('stat-correct').textContent = correct;
-  document.getElementById('stat-wrong').textContent = wrong;
-  const acc = attempted ? Math.round(correct/attempted*100) : 0;
-  document.getElementById('stat-acc').textContent = acc + '%';
-  document.getElementById('acc-bar').style.width = acc + '%';
+  document.getElementById('stat-attempted').textContent=attempted;
+  document.getElementById('stat-correct').textContent=correct;
+  document.getElementById('stat-wrong').textContent=wrong;
+  const acc=attempted?Math.round(correct/attempted*100):0;
+  document.getElementById('stat-acc').textContent=acc+'%';
+  document.getElementById('acc-bar').style.width=acc+'%';
 }
 
 let toastTimer;
 function showToast(icon, msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-icon').textContent = icon;
-  document.getElementById('toast-msg').textContent = msg;
-  t.style.background = icon==='✅' ? '#065F46' : icon==='❌' ? '#7F1D1D' : '#1F2937';
+  const t=document.getElementById('toast');
+  document.getElementById('toast-icon').textContent=icon;
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.background=icon==='✅'?'#065F46':icon==='❌'?'#7F1D1D':'#1F2937';
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
 function setFilter(btn, val) {
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
+  if(val!=='all') loadMCQs({examType:val});
+  else loadMCQs();
 }
 
-// Daily timer
-function updateTimer() {
-  const now = new Date();
-  const midnight = new Date(now); midnight.setHours(24,0,0,0);
-  const diff = Math.floor((midnight-now)/1000);
-  const h = Math.floor(diff/3600).toString().padStart(2,'0');
-  const m = Math.floor((diff%3600)/60).toString().padStart(2,'0');
-  document.getElementById('daily-timer').textContent = h+':'+m;
+function updateTimer(){
+  const now=new Date(), midnight=new Date(now);
+  midnight.setHours(24,0,0,0);
+  const diff=Math.floor((midnight-now)/1000);
+  const h=Math.floor(diff/3600).toString().padStart(2,'0');
+  const m=Math.floor((diff%3600)/60).toString().padStart(2,'0');
+  const el=document.getElementById('daily-timer');
+  if(el) el.textContent=h+':'+m;
 }
-updateTimer(); setInterval(updateTimer, 60000);
+updateTimer(); setInterval(updateTimer,60000);
+
+// Load live MCQs on page load
+loadMCQs();
 </script>
 </body>
 </html>
