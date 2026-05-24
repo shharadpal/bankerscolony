@@ -209,66 +209,118 @@ a{text-decoration:none;color:inherit;}
     <div id="forgot-success" class="success-msg" style="margin-top:14px;text-align:left;">✅ Reset link sent! Check your inbox.</div>
   </div>
 </div>
-
+<script src="config.js"></script>
 <script>
-// Check URL hash for tab
-if(window.location.hash === '#register') switchTab('register');
+// Already logged in → go to dashboard
+if (getToken()) window.location.href = 'dashboard.html';
+
+// Handle hash tab
+if (window.location.hash === '#register') switchTab('register');
 
 function switchTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach((t,i) => {
+  document.querySelectorAll('.auth-tab').forEach((t, i) => {
     t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register'));
   });
   document.getElementById('tab-login').classList.toggle('active', tab==='login');
   document.getElementById('tab-register').classList.toggle('active', tab==='register');
-  if(tab==='register') window.location.hash='register';
-  else window.location.hash='';
+  window.location.hash = tab === 'register' ? 'register' : '';
 }
 
-function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-password').value;
-  if(!email || !pass) { document.getElementById('login-error').classList.add('show'); return; }
-  // In production: POST to /api/auth/login
-  document.getElementById('login-error').classList.remove('show');
-  // Demo redirect
-  window.location.href = 'dashboard.html';
+// Handle email verification redirect
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('verified') === 'success') {
+  const e = document.getElementById('login-error');
+  if(e){ e.textContent='✅ Email verified! You can now log in.'; e.style.background='#D1FAE5'; e.style.color='#059669'; e.style.borderColor='#A7F3D0'; e.classList.add('show'); }
+}
+if (urlParams.get('verified') === 'error') {
+  const e = document.getElementById('login-error');
+  if(e){ e.textContent='Email verification failed. Please try again.'; e.classList.add('show'); }
 }
 
-function doRegister() {
-  const fname = document.getElementById('reg-fname').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-password').value;
-  const terms = document.getElementById('reg-terms').checked;
-  if(!fname || !email || pass.length < 8 || !terms) {
-    document.getElementById('reg-error').classList.add('show'); return;
+// Handle password reset link from email
+const resetToken = urlParams.get('reset');
+if (resetToken) {
+  const pass = prompt('Enter your new password (minimum 8 characters):');
+  if (pass && pass.length >= 8) {
+    api('/api/auth/reset-password', 'POST', { token: resetToken, password: pass })
+      .then(d => { if(d.ok){ setToken(d.token); setUser(d.user); window.location.href='dashboard.html'; }})
+      .catch(e => alert('Password reset failed: ' + e.message));
   }
-  document.getElementById('reg-error').classList.remove('show');
-  // In production: POST to /api/auth/register
-  document.getElementById('reg-success').classList.add('show');
-  setTimeout(() => window.location.href = 'dashboard.html', 2000);
 }
 
-function googleAuth() {
-  // In production: redirect to /api/auth/google
-  alert('Google login will work once backend is connected.');
+// ── LOGIN ─────────────────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  const btn   = document.querySelector('#tab-login .btn-primary');
+  if(errEl) errEl.classList.remove('show');
+  if (!email || !pass) {
+    if(errEl){ errEl.textContent='Please enter your email and password.'; errEl.classList.add('show'); }
+    return;
+  }
+  try {
+    if(btn){ btn.textContent='Signing in…'; btn.disabled=true; }
+    const data = await api('/api/auth/login', 'POST', { email, password: pass });
+    setToken(data.token); setUser(data.user);
+    window.location.href = 'dashboard.html';
+  } catch (err) {
+    if(errEl){ errEl.textContent=err.message||'Invalid email or password.'; errEl.classList.add('show'); }
+    if(btn){ btn.textContent='Sign In →'; btn.disabled=false; }
+  }
 }
 
-function showForgot() { document.getElementById('forgot-modal').classList.add('show'); }
+// ── REGISTER ──────────────────────────────────────────────────────
+async function doRegister() {
+  const fname  = document.getElementById('reg-fname').value.trim();
+  const lname  = document.getElementById('reg-lname').value.trim();
+  const email  = document.getElementById('reg-email').value.trim();
+  const mobile = document.getElementById('reg-mobile').value.trim();
+  const exam   = document.getElementById('reg-exam').value;
+  const pass   = document.getElementById('reg-password').value;
+  const terms  = document.getElementById('reg-terms').checked;
+  const errEl  = document.getElementById('reg-error');
+  const sucEl  = document.getElementById('reg-success');
+  const btn    = document.querySelector('#tab-register .btn-primary');
+  if(errEl) errEl.classList.remove('show');
+  if(sucEl) sucEl.classList.remove('show');
+  if (!fname || !email || pass.length < 8 || !terms) {
+    if(errEl){ errEl.textContent='Fill all required fields (password min 8 chars) and accept terms.'; errEl.classList.add('show'); }
+    return;
+  }
+  try {
+    if(btn){ btn.textContent='Creating account…'; btn.disabled=true; }
+    const data = await api('/api/auth/register', 'POST', {
+      name: (fname+' '+lname).trim(), email, mobile, examCategory: exam, password: pass
+    });
+    setToken(data.token); setUser(data.user);
+    if(sucEl){ sucEl.textContent='✅ Account created! Redirecting…'; sucEl.classList.add('show'); }
+    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+  } catch (err) {
+    if(errEl){ errEl.textContent=err.message||'Registration failed. Try again.'; errEl.classList.add('show'); }
+    if(btn){ btn.textContent='Create Free Account 🚀'; btn.disabled=false; }
+  }
+}
+
+// ── GOOGLE AUTH ───────────────────────────────────────────────────
+function googleAuth() { window.location.href = API_BASE + '/api/auth/google'; }
+
+// ── FORGOT PASSWORD ───────────────────────────────────────────────
+function showForgot() { const m=document.getElementById('forgot-modal'); if(m) m.classList.add('show'); }
 function hideForgot() {
-  document.getElementById('forgot-modal').classList.remove('show');
-  document.getElementById('forgot-success').classList.remove('show');
+  const m=document.getElementById('forgot-modal'); if(m) m.classList.remove('show');
+  const s=document.getElementById('forgot-success'); if(s) s.classList.remove('show');
 }
-function doForgot() {
+async function doForgot() {
   const email = document.getElementById('forgot-email').value.trim();
-  if(!email) return;
-  // In production: POST to /api/auth/forgot-password
-  document.getElementById('forgot-success').classList.add('show');
+  if (!email) return;
+  try {
+    await api('/api/auth/forgot-password', 'POST', { email });
+    const s=document.getElementById('forgot-success'); if(s) s.classList.add('show');
+  } catch (err) { alert(err.message||'Failed to send reset email.'); }
 }
-
-// Close modal on overlay click
-document.getElementById('forgot-modal').addEventListener('click', function(e){
-  if(e.target === this) hideForgot();
-});
+const forgotModal = document.getElementById('forgot-modal');
+if(forgotModal) forgotModal.addEventListener('click', function(e){ if(e.target===this) hideForgot(); });
 </script>
 </body>
 </html>
