@@ -121,8 +121,8 @@ a{text-decoration:none;color:inherit;}
     <a href="index.html" class="logo-name">Bankers<span>Colony</span></a>
     <div class="header-right">
       <div class="user-avatar">RS</div>
-      <span class="user-name">Rahul</span>
-      <a href="login.html" class="btn btn-outline btn-sm">Logout</a>
+      <span class="user-name">...</span>
+      <a href="#" class="btn btn-outline btn-sm" onclick="event.preventDefault();logout();">Logout</a>
     </div>
   </div>
 </header>
@@ -133,8 +133,8 @@ a{text-decoration:none;color:inherit;}
   <aside class="sidebar">
     <div class="sb-user">
       <div class="sb-avatar">RS</div>
-      <div class="sb-name">Rahul Sharma</div>
-      <div class="sb-email">rahul@sbi.co.in</div>
+      <div class="sb-name">Loading...</div>
+      <div class="sb-email"></div>
       <div class="sb-plan free">Free Plan</div>
     </div>
     <div class="sb-section">Learning</div>
@@ -163,7 +163,7 @@ a{text-decoration:none;color:inherit;}
     </div>
 
     <div id="section-overview">
-      <div class="page-title">Good Morning, Rahul 👋</div>
+      <div class="page-title">Loading...</div>
       <div class="page-sub">Keep up the momentum — you have a <strong style="color:var(--green);">5-day streak!</strong></div>
 
       <!-- STATS -->
@@ -309,10 +309,10 @@ a{text-decoration:none;color:inherit;}
         <div class="card-head"><h3>👤 Personal Information</h3></div>
         <div class="card-body">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-            <div><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">First Name</label><input type="text" value="Rahul" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
+            <div><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">First Name</label><input type="text" value="" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
             <div><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Last Name</label><input type="text" value="Sharma" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
           </div>
-          <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Email Address</label><input type="email" value="rahul@sbi.co.in" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;background:var(--gray2);" readonly></div>
+          <div style="margin-bottom:14px;"><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Email Address</label><input type="email" value="" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;background:var(--gray2);" readonly></div>
           <div style="margin-bottom:16px;"><label style="font-size:12px;font-weight:600;color:var(--gray);display:block;margin-bottom:5px;">Mobile Number</label><input type="tel" value="+91 98765 43210" style="width:100%;padding:10px 12px;border:1.5px solid var(--gray3);border-radius:8px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;"></div>
           <button class="btn btn-primary">Save Changes</button>
         </div>
@@ -337,161 +337,4 @@ a{text-decoration:none;color:inherit;}
       <div class="card">
         <div class="card-body">
           <div class="test-row"><div class="test-icon">📋</div><div class="test-info"><h4>JAIIB PPB Full Test #2</h4><p>7 May 2026</p></div><div class="test-score">36/50<span>72% · #420</span></div></div>
-          <div class="test-row"><div class="test-icon" style="background:var(--gold2);">🏅</div><div class="test-info"><h4>Banking Awareness Quiz</h4><p>5 May 2026</p></div><div class="test-score">24/30<span>80%</span></div></div>
-          <div class="test-row"><div class="test-icon" style="background:var(--green2);">📋</div><div class="test-info"><h4>JAIIB PPB Full Test #1</h4><p>2 May 2026</p></div><div class="test-score" style="color:var(--gold);">30/50<span>60%</span></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="section-mcqs" style="display:none;">
-      <div class="page-title">MCQ History</div>
-      <div class="page-sub">Your recent practice sessions.</div>
-      <a href="mcq.html" class="btn btn-primary" style="margin-bottom:20px;">Practice More MCQs →</a>
-      <div class="card"><div class="card-body"><p style="color:var(--gray);font-size:13px;text-align:center;padding:20px;">MCQ history will appear here after you practice more questions.</p></div></div>
-    </div>
-
-    <div id="section-subscription" style="display:none;">
-      <div class="page-title">Subscription</div>
-      <div class="page-sub">Manage your plan.</div>
-      <div class="card" style="max-width:500px;">
-        <div class="card-body" style="text-align:center;padding:32px;">
-          <div style="font-size:40px;margin-bottom:12px;">🆓</div>
-          <div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:6px;">You are on Free Plan</div>
-          <div style="font-size:13px;color:var(--gray);margin-bottom:20px;line-height:1.65;">Upgrade to Pro (₹599/mo) to unlock unlimited MCQs, all mock tests, JAIIB and CAIIB courses.</div>
-          <a href="login.html#register" class="btn btn-gold" style="justify-content:center;">⭐ Upgrade to Pro — ₹599/mo</a>
-        </div>
-      </div>
-    </div>
-
-  </main>
-</div>
-<script src="config.js"></script>
-<script>
-requireAuth();
-
-async function loadDashboard() {
-  try {
-    const data = await api('/api/dashboard');
-    const user = data.user;
-    setUser({ ...getUser(), ...user });
-
-    // Initials
-    const initials = user.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = initials);
-    document.querySelectorAll('.sb-avatar').forEach(el => el.textContent = initials);
-    document.querySelectorAll('.user-name').forEach(el => el.textContent = user.name.split(' ')[0]);
-    document.querySelectorAll('.sb-name').forEach(el => el.textContent = user.name);
-    document.querySelectorAll('.sb-email').forEach(el => el.textContent = user.email);
-
-    // Plan badge
-    const planEl = document.querySelector('.sb-plan');
-    if (planEl) {
-      const labels = { free:'Free Plan', basic:'Basic Plan', pro:'Pro Plan', elite:'Elite Plan' };
-      planEl.textContent = labels[user.plan] || user.plan;
-      planEl.className = 'sb-plan' + (user.plan==='free' ? ' free' : '');
-    }
-
-    // Stats
-    const s = user.stats || {};
-    const vals = document.querySelectorAll('.stat-val');
-    if (vals[0]) vals[0].textContent = (s.mcqAttempted||0).toLocaleString();
-    if (vals[1]) { const acc = s.mcqAttempted ? Math.round(s.mcqCorrect/s.mcqAttempted*100) : 0; vals[1].textContent = acc+'%'; }
-    if (vals[2]) vals[2].textContent = s.testsAttempted||0;
-    if (vals[3]) vals[3].textContent = s.streak||0;
-
-    // Greeting
-    const greetEl = document.querySelector('#section-overview .page-title');
-    if (greetEl) {
-      const hr = new Date().getHours();
-      const greet = hr<12?'Good Morning':hr<17?'Good Afternoon':'Good Evening';
-      greetEl.textContent = greet+', '+user.name.split(' ')[0]+' 👋';
-    }
-
-    // Streak subtext
-    const subEl = document.querySelector('#section-overview .page-sub');
-    if (subEl && s.streak) {
-      subEl.innerHTML = 'Keep up the momentum — you have a <strong style="color:var(--green);">'+s.streak+'-day streak!</strong>';
-    }
-
-    // Recent tests
-    if (data.recentTests && data.recentTests.length) {
-      const rows = document.querySelectorAll('.test-row');
-      const container = rows[0]?.parentElement;
-      if (container) {
-        container.innerHTML = '';
-        data.recentTests.forEach(t => {
-          const pct = t.totalMarks ? Math.round(t.score/t.totalMarks*100) : 0;
-          container.innerHTML += `<div class="test-row">
-            <div class="test-icon">📋</div>
-            <div class="test-info"><h4>${t.testId?.title||'Mock Test'}</h4>
-            <p>${new Date(t.completedAt).toLocaleDateString('en-IN')}</p></div>
-            <div class="test-score">${t.score}/${t.totalMarks}<span>${pct}%</span></div>
-          </div>`;
-        });
-      }
-    }
-
-    // Profile form
-    const pInputs = document.querySelectorAll('#section-profile input');
-    if (pInputs.length >= 2) {
-      const parts = user.name.split(' ');
-      pInputs[0].value = parts[0]||'';
-      pInputs[1].value = parts.slice(1).join(' ')||'';
-      if(pInputs[2]) pInputs[2].value = user.email||'';
-      if(pInputs[3]) pInputs[3].value = user.mobile||'';
-    }
-
-    // Subscription section
-    const subCard = document.querySelector('#section-subscription .card-body');
-    if (subCard && user.plan !== 'free') {
-      const expiry = user.planExpiresAt ? new Date(user.planExpiresAt).toLocaleDateString('en-IN') : 'N/A';
-      subCard.innerHTML = `<div style="text-align:center;padding:32px;">
-        <div style="font-size:40px;margin-bottom:12px;">⭐</div>
-        <div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:6px;">
-          ${user.plan.charAt(0).toUpperCase()+user.plan.slice(1)} Plan — Active</div>
-        <div style="font-size:13px;color:var(--gray);margin-bottom:16px;">Valid until: <strong>${expiry}</strong></div>
-        <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
-      </div>`;
-    }
-
-  } catch (err) {
-    console.error('Dashboard error:', err.message);
-    if (err.message.toLowerCase().includes('token')||err.message.toLowerCase().includes('auth')) {
-      clearAuth(); window.location.href='login.html';
-    }
-  }
-}
-
-async function saveProfile() {
-  const inputs = document.querySelectorAll('#section-profile input');
-  const name   = ((inputs[0]?.value||'')+' '+(inputs[1]?.value||'')).trim();
-  const mobile = inputs[3]?.value?.trim();
-  try {
-    const data = await api('/api/dashboard/profile','PUT',{name,mobile});
-    setUser({...getUser(),...data.user});
-    alert('✅ Profile updated successfully!');
-  } catch(err){ alert('Error: '+err.message); }
-}
-
-function switchSection(id) {
-  document.querySelectorAll('[id^="section-"]').forEach(s=>s.style.display='none');
-  const target = document.getElementById('section-'+id);
-  if(target) target.style.display='block';
-  document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
-  if(event?.currentTarget) event.currentTarget.classList.add('active');
-}
-
-// Wire save profile button
-document.addEventListener('DOMContentLoaded', () => {
-  const saveBtn = document.querySelector('#section-profile .btn-primary');
-  if(saveBtn) saveBtn.onclick = saveProfile;
-  // Wire logout buttons
-  document.querySelectorAll('a[href="login.html"]').forEach(a => {
-    if(a.textContent.trim()==='Logout') { a.href='#'; a.onclick=e=>{e.preventDefault();logout();}; }
-  });
-});
-
-loadDashboard();
-</script>
-</body>
-</html>
+          <div class="test-row"><div class="test-icon" style="background:var(--gold2);">🏅</div><div class="test-info"><h
